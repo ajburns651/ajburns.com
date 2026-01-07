@@ -26,8 +26,22 @@ function closeModal() {
   }
 }
 
+function isMobile() {
+  return window.matchMedia("(max-width: 768px)").matches;
+}
+
+
 // RESUME Link: Opens the PDF
-resumeBtn.onclick = (e) => openModal(e, "assets/resume.pdf");
+resumeBtn.onclick = (e) => {
+  if (isMobile()) {
+    // Let mobile open PDF normally in a new tab
+    e.preventDefault();
+    window.open("assets/resume.pdf", "_blank");
+  } else {
+    openModal(e, "assets/resume.pdf");
+  }
+};
+
 
 // Experiences Links: Use a class listener to handle multiple "Read More" buttons
 document.querySelectorAll('.read-more').forEach(button => {
