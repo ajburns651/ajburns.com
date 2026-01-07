@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alexander Burns | Aerospace Engineering</title>
+  <link rel="stylesheet" href="css/homepage.css">
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav-overlay">
+  <div class="nav-container">
+    <div class="logo">
+        <a href="https://www.linkedin.com/in/alex-burns1/" class="logo-link">
+            <img src="assets/images/profile.jpeg" alt="Alexander Burns">
+        </a>    
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#experiences">Experiences</a>
+      <a href="index.html#projects">Projects</a>
+      <a href="index.html#" id="resumeLink">Resume</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" style="background-image: url('assets/images/hero.jpeg');">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1>Alexander Burns</h1>
+    <p class="hero-subtitle">Aerospace Engineering Portfolio</p>
+  </div>
+</header>
+
+<!-- SUMMARY -->
+<section id="summary" class="section container">
+  <h2>Summary</h2>
+    <p>
+    I am a 4th year aerospace engineering student at UC San Diego specializing in
+    astrodynamics and controls, with hands-on experience in spacecraft systems,
+    satellite operations, and multidisciplinary vehicle design. My work focuses
+    on data-driven analysis, modeling and simulation, and validation through
+    testing across space and aerospace applications.
+  </p>
+    <div class="image-wrapper">
+        <img src="assets/images/jobs.png" alt="Jobs Draw.io">
+    </div>
+</section>
+
+<!-- STRENGTHS / INTERESTS -->
+<section class="section container two-column">
+  <div>
+    <h3>Strengths</h3>
+    <ul>
+      <li>Modeling & simulation (MATLAB, Python, CFD, FEA)</li>
+      <li>Cross-disciplinary collaboration</li>
+      <li>Verification, validation, and testing</li>
+    </ul>
+  </div>
+  <div>
+    <h3>Interests</h3>
+    <ul>
+      <li>GNC for spacecraft, especially trajectory optimization and control</li>
+      <li>Spacecraft systems design and mission-level trade studies</li>
+      <li>Sacrificing sleep for convergence</li>
+    </ul>
+  </div>
+</section>
+
+<!-- EXPERIENCES -->
+<section id="experiences" class="section container">
+  <h2>Experiences</h2>
+
+  <!-- Top Logo Row -->
+  <div class="logo-row">
+    <img src="assets/images/lsdologo.png" />
+    <img src="assets/images/planetlogo.png" />
+    <img src="assets/images/viasatlogo.png" />
+  </div>
+
+    <div class="timeline-container">
+
+    <!-- Center Line -->
+    <div class="timeline-line"></div>
+
+    <!-- LSDO Lab -->
+    <div class="timeline-entry right">
+        <div class="dot planet">L</div>
+        <div class="date"><strong>2025 – Present</strong></div>
+        <div class="card">
+        <h3>UCSD - Design Optimization Laboratory</h3>
+        <p>
+            Aircraft and quadrotor design optimization integrating aerodynamics,
+            GNC constraints, and mission performance.
+        </p>
+        <a href="javascript:void(0)" class="read-more" id="lsdoBtn" data-project="experiences/lsdo.html">Read More</a>
+        </div>
+
+        <!-- Image For Opposite side -->
+        <div class="timeline-image left">
+            <img src="assets/images/lsdo.gif" alt="LSDO Quadrotor Animiation" />
+        </div>
+    </div>
+
+    <!-- Planet Labs -->
+    <div class="timeline-entry right">
+        <div class="dot planet">PL</div>
+        <div class="date"><strong>Summer 2025</strong></div>
+        <div class="card">
+        <h3>Planet — Systems Engineering Intern</h3>
+        <p>
+            Spacecraft systems analysis, risk reduction, and environmental testing
+            support for the Pelican Block II program, including GNC, power, and
+            structural validation.
+        </p>
+        <a href="javascript:void(0)" class="read-more" id="planetBtn" data-project="experiences/planetlabs.html">Read More</a>
+        </div>
+
+        <!-- Image For Opposite side -->
+        <div class="timeline-image left">
+            <img src="assets/images/pelican.jpg" alt="Planet Labs spacecraft" />
+        </div>
+    </div>
+
+    <!-- Viasat -->
+    <div class="timeline-entry right">
+        <div class="dot viasat">VS</div>
+        <div class="date">
+        <strong>2023 – 2025</strong>
+        </div>
+        <div class="card">
+        <h3>Viasat — Satellite Operations Intern</h3>
+        <p>
+            Developed operational tools and supported flight dynamics activities
+            including station-keeping optimization and anomaly mitigation for GEO
+            satellites.
+        </p>
+                <a href="javascript:void(0)" class="read-more" id="viasatBtn" data-project="experiences/viasat.html">Read More</a>
+        </div>
+
+        <!-- Image For Opposite side -->
+        <div class="timeline-image left">
+            <img src="assets/images/scc.png" alt="Viasat Control Center" />
+        </div>
+    </div>
+
+</section>
+
+
+<!-- PROJECTS -->
+<section id="projects" class="section">
+    <div class="projects-wrapper"> <h2>Projects</h2>
+        <div class="projects-grid">
+            <div class="project-item">
+                <a href="javascript:void(0)" data-project="projects/yonder.html">
+                    <img src="assets/images/project_yonder.png" alt="Yonder Dynamics Rover">
+                    <div class="project-overlay">
+                        <div class="overlay-content">
+                            <h3>Rover Elbow Joint</h3>
+                            <p>Yonder Dynamics (URC)</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="project-item">
+                <a href="javascript:void(0)" data-project="projects/fsae.html">
+                    <img src="assets/images/project_fsae.png" alt="Triton Racing Car">
+                    <div class="project-overlay">
+                        <div class="overlay-content">
+                            <h3>Carbon-Fiber Aero Package</h3>
+                            <p>Triton Racing (FSAE)</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="project-item">
+                <a href="javascript:void(0)" data-project="projects/cfd.html">
+                    <img src="assets/images/project_cfd.png" alt="CFD Cold Flow">
+                    <div class="project-overlay">
+                        <div class="overlay-content">
+                            <h3>Cold Flow Simulation</h3>
+                            <p>Personal</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="project-item">
+                <a href="javascript:void(0)" data-project="projects/wingspar.html">
+                    <img src="assets/images/project_wingspar.png" alt="Wing Spar">
+                    <div class="project-overlay">
+                        <div class="overlay-content">
+                            <h3>Cessna 172 Wing Structure</h3>
+                            <p>Personal</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer-bar">
+  <div class="footer-container">
+    <div class="footer-left">
+      <a href="https://www.linkedin.com/in/alex-burns1/" target="_blank" class="linkedin-link">
+        <img src="assets/images/LinkedIn_icon.png" alt="LinkedIn" class="linkedin-icon" />
+        <span class="linkedin-text">LinkedIn</span>
+      </a>
+    </div>
+
+    <div class="footer-copyright">
+      &copy; 2026 Alexander Burns
+    </div>
+
+    <div class="footer-right">
+      <a href="mailto:a2burns@ucsd.edu" class="email-link">a2burns@ucsd.edu</a>
+    </div>
+  </div>
+</footer>
+
+
+<!-- RESUME POPUP -->
+<div id="resumeModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <iframe src="assets/resume.pdf" width="100%" height="100%" frameborder="0"></iframe>
+  </div>
+</div>
+
+</body>
+
+<script src="js/script.js"></script>

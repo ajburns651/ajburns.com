@@ -1,0 +1,534 @@
+/* BASE */
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #222;
+  line-height: 1.6;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* NAV OVER HERO */
+.nav-overlay {
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  display: block;
+}
+
+.nav-links a {
+  margin-left: 1.5rem;
+  font-size: 1.15rem;
+}
+
+/* HERO */
+.hero {
+  height: 25vh;
+  max-height: 300px; /* Adjust this number to your preference */
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+}
+
+.hero-content {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically centers the entire group */
+  align-items: center;
+  color: white;
+  text-align: center;
+  /* Adjust this gap value to your liking for laptop vs monitor balance */
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin: 0; /* Removes the 4vh that pushed it down */
+}
+
+.hero-subtitle {
+  letter-spacing: 2px;
+  font-size: 1rem;
+  margin: 0; /* Removes the -5vh that caused the overlap */
+}
+
+/* SUMMARY */
+.image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 95%;
+}
+
+.image-wrapper img {
+  max-width: 1200px;   /* maximum stretch width */
+  width: 100%;         /* shrink on smaller screens */
+  height: auto;        /* preserve aspect ratio */
+  object-fit: contain;
+}
+
+/* SECTIONS */
+.section {
+  padding: 4rem 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 1rem;
+}
+
+section.container h2 {
+  text-align: center;
+  margin-bottom: 0rem; /* Adds some space below the title */
+  width: 100%;         /* Ensures the text aligns relative to the full container width */
+  font-size: 35px;
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+/* TIMELINE */
+/* TIMELINE LOGO ROW */
+.logo-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Prevent logos from moving to a new line */
+  flex-wrap: nowrap; 
+  /* Use a flexible gap that shrinks with the screen */
+  gap: clamp(20px, 8vw, 200px); 
+  margin-bottom: 60px;
+  margin-top: 20px;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  /* Hide any overflow just in case, though the shrink logic should prevent it */
+  overflow: hidden; 
+}
+
+.logo-row img {
+  /* This allows the images to shrink as the container gets smaller */
+  height: auto;
+  max-height: 100px; 
+  width: auto;
+  /* Ensures the logo takes up a percentage of the row at most */
+  max-width: 15%; 
+  opacity: 1.0;
+  object-fit: contain;
+  /* Essential for shrinking */
+  flex-shrink: 1; 
+}
+
+/* ===== Timeline colors ===== */
+:root {
+  --accent-blue: #4aa3df;
+  --line-gray: #dcdcdc;
+  --text-gray: #5f5f5f;
+  --card-bg: #f1f3f6;
+}
+
+/* ===== Timeline base ===== */
+.timeline-container {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: visible;
+  padding: 0 40px; 
+  box-sizing: border-box; 
+}
+
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--line-gray);
+  transform: translateX(-50%);
+}
+
+.timeline-line::before {
+  content: "";
+  position: absolute;
+  top: -10px;          /* Pulls it slightly above the start of the line */
+  left: 50%;           /* Centers it horizontally */
+  transform: translateX(-50%); /* Ensures it is perfectly centered on the line */
+  width: 12px;         /* Diameter of the circle */
+  height: 12px;
+  background-color: var(--line-gray); /* Matches your timeline line color */
+  border-radius: 50%;  /* Makes it a circle */
+  z-index: 1;
+}
+
+/* ---------- Timeline Entries ---------- */
+.timeline-entry {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 50%;
+  padding: 30px 50px;
+  margin-bottom: 70px;
+}
+
+/* Align the Date with the Dot */
+.timeline-entry .date {
+  display: flex;
+  align-items: center; /* Vertically centers text with the dot */
+  height: 36px;        /* Matches the height of your .dot class */
+  margin-bottom: 10px; /* Space between date and card */
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-gray);
+}
+
+.timeline-entry.right {
+  left: 50%;
+  text-align: left;
+}
+
+/* ---------- Dots ---------- */
+.dot {
+  position: absolute;
+  top: 30px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.right .dot {
+  left: -18px;
+}
+
+.dot.planet {
+  background: #4285F4;
+}
+
+.dot.viasat {
+  background: #4285F4;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 24px 28px;
+  max-width: 420px;
+
+  /* subtle blue outline like reference */
+  border: 1.5px solid rgba(74, 163, 223, 0.6);
+
+  /* refined elevation */
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(74, 163, 223, 0.06);
+}
+
+.right .card {
+  margin-left: 0;
+}
+
+/* ===== Titles ===== */
+.card h3 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--accent-blue);
+}
+
+.card img {
+  width: 100%;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.card p {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: #444;
+}
+
+.read-more {
+  display: inline-block;
+  margin-top: 0px;
+  font-weight: 600;
+  color: #ff2d55; /* Vibrant pink/red color from your image */
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+/* Hover effect for better interactivity */
+.read-more:hover {
+  color: #d11d41; /* Slightly darker on hover */
+  text-decoration: underline;
+  transform: translateX(5px); /* Subtle nudge to the right */
+}
+
+
+.card .read-more {
+  align-self: flex-end; /* Pushes the link to the right edge of the card */
+}
+
+/* ===== Timeline Image ===== */
+.timeline-image {
+  position: absolute;
+  top: 0;
+  width: 400px;
+  z-index: 10;
+}
+
+.timeline-image.left {
+  right: 100%;
+  margin-right: 50px;
+}
+
+.timeline-image img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+  display: block;
+}
+
+
+/* Projects Grid Layout */
+/* Add this to tighten the start of the projects section */
+#projects.section {
+    padding-top: 0rem; /* Reduced from 4rem */
+}
+/* Center the entire project block to match the timeline width */
+.projects-wrapper {
+    max-width: 1100px; /* Exact match to your .timeline-container */
+    margin: 0 auto;    /* Centers the block on the page */
+    padding: 0 40px;   /* Matches the timeline gutter padding */
+    box-sizing: border-box;
+}
+
+/* Center the Title specifically */
+.projects-wrapper h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 35px;
+    width: 100%;
+}
+
+/* The Grid */
+.projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px; /* Space between columns */
+    width: 100%;
+}
+
+/* Re-apply the centering for your Hover Overlay */
+.project-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;             /* Vital for centering text */
+    justify-content: center;    /* Horizontal center */
+    align-items: center;        /* Vertical center */
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.project-item:hover .project-overlay {
+    opacity: 1;
+}
+
+/* Overlay Text Styling */
+.overlay-content h3 {
+    color: white;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.overlay-content p {
+    color: #ccc;
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0;
+}
+
+/* 1. The Container: Defines the "Window" size */
+.project-item {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10; /* Forces a consistent rectangular shape */
+    border-radius: 12px;
+    overflow: hidden;      /* Clips anything that sticks out */
+    box-sizing: border-box;
+}
+
+/* 2. The Image: Forces the actual photo to shrink and fit */
+.project-item img {
+    width: 100%;           /* Shrinks image width to match container */
+    height: 100%;          /* Shrinks image height to match container */
+    object-fit: cover;     /* Crops the photo to fill the box without squishing */
+    display: block;        /* Removes random bottom gaps */
+}
+
+/* Optional: Slight zoom on the image when hovering */
+.project-item:hover img {
+    transform: scale(1.05);
+}
+
+/* FOOTER */
+/* Footer Bar Styling */
+.footer-bar {
+  background-color: #f4f4f4; /* Light grey background bar */
+  padding: 1.5rem 0;
+  width: 100%;
+  border-top: 1px solid #ddd; /* Subtle line to separate from content */
+}
+
+.footer-container {
+  max-width: 1300px; /* Matches your site's content width */
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between; /* Pushes content to the far left and right */
+  align-items: center;
+}
+
+.footer-item {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+/* LinkedIn Specific Styling */
+.linkedin-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+}
+
+.linkedin-icon {
+  height: 24px;
+  width: auto;
+}
+
+/* Email Specific Styling */
+.email-link {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.email-link:hover {
+  color: #0056b3; /* Changes to your accent blue on hover */
+}
+
+.footer-copyright {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 400;
+}
+
+.footer-icon {
+  height: 18px;
+  width: auto;
+}
+
+/* RESUME STUFF */
+/* Modal Background */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  background-color: rgba(0, 0, 0, 0.8); /* Dims the background */
+  backdrop-filter: blur(5px);
+}
+
+/* Modal Content Box */
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  margin: 2% auto; 
+  padding: 3px;
+  width: 85%;
+  height: 90vh; /* Takes up 90% of screen height */
+  border-radius: 8px;
+}
+
+/* Close Button (X) */
+.close-btn {
+  position: absolute;
+  top: -41px;
+  right: 0;
+  color: white;
+  font-size: 35px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: var(--accent-blue);
+  transform: scale(1.1); /* Slightly enlarge */
+  transition: transform 0.2s ease;
+}

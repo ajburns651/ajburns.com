@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AB | Planet Labss</title>
+    <link rel="stylesheet" href="../css/experiences.css">
+</head>
+<body>
+
+<header class="project-page-hero" style="background-image: url('../assets/images/experiences/planet/hero.jpg');">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1>Planet Labs Internship</h1>
+    <p class="project-page-hero-subtitle">Spacecraft Systems Engineer</p>
+  </div>
+</header>
+
+<main id="project-detail-section" class="project-detail-container">
+    <p class="disclaimer-text">
+        Non-Disclosure Agreement: I will only disclose non-proprietary information regarding my work at Planet Labs. All images are public knowledge.
+    </p>
+
+    <div class="project-row">
+        <div class="project-text">
+            <p>During my summer internship at <span class="accent-text">Planet</span>, I helped mature the <strong>Pelican Block II</strong> program from PDR through CDR by implementing an analysis-driven risk posture focused on continous V&V. This involved deep analytical dives to mitigate risks before they hit flight hardware. These projects taught me how to define the trade space for critical subsystems and manage systems-level margins, providing a deep appreciation for how overall performance emerges from the complex interplay of dozens of interdependent variables.</p>
+        </div>
+        <div class="project-image">
+            <img src="../assets/images/experiences/planet/group.jpeg" alt="Planet Intern Group">
+        </div>
+    </div>
+    <div class="project-row">
+        <div class="project-image">
+            <img src="../assets/images/experiences/planet/powersim.gif" alt="LEO Power Simulation Visualization">
+        </div>
+        <div class="project-text">
+          <p>
+              I developed a comprehensive spacecraft power and drag simulation framework. By synchronizing the simulation with the satellite's 
+              true activity schedule and propagated orbital position, the tool 
+              evaluated generation profiles against complex constraints such as sun fraction, attitude slews, 
+              and GEO relay pointing. This rigorous approach enabled <strong>power consumption estimates 
+              within a 2% margin of error</strong>. Furthermore, by integrating Monte Carlo drag parameters 
+              from <strong>OpenFOAM</strong>, I provided critical data on how GEO pointing implications 
+              directly penalize lifetime propellant consumption in LEO.
+         </p>
+        </div>
+    </div>
+    <div class="project-row">
+        <div class="project-text">
+          <p>
+            I performed a comprehensive <strong>STOP (Structural, Thermal, Optical)</strong> 
+            analysis for the Pelican Block II spacecraft to accommodate its next-generation 
+            payload. By simulating structural and thermal fluctuations in <strong>ANSYS 
+            Zemax</strong>, I correlated environmental changes over the orbital duty cycle 
+            to predict optomechanical deformations. This analysis enabled the determination 
+            of the <strong>optimal focus position</strong>, ensuring minimal wavefront error 
+            and peak imaging performance across extreme spacecraft temperature gradients.
+          </p>
+        </div>
+        <div class="project-image">
+          <img src="../assets/images/experiences/planet/stop.png" alt="Planet STOP Investigation">
+        </div>
+    </div>
+    <div class="project-row">
+        <div class="project-image">
+            <img src="../assets/images/experiences/planet/ferromagnetic.png" alt="Planet Ferromagnetic Investigation">
+        </div>
+        <div class="project-text">
+            <p>I spearheaded a critical study on un-characterized ferromagnetic materials within the Block II payload. By modeling theoretical fields in <strong>FEMM</strong> and computing equivalent magnetic dipole moments, I validated that these materials had insignificant impacts on <strong>GNC control authority</strong>. This analysis ensured high-precision satellite pointing stability during sensitive imaging operations.</p>
+        </div>
+    </div>
+
+    <div class="project-row">
+        <div class="project-text">
+            <p>Supporting the SQM build campaign, I performed Root-Cause Corrective Analysis (RCCA) during intensive <strong>Vibration and TVAC testing</strong>. When response shifts occurred, I utilized <strong>MATLAB and Python</strong> to model system behavior and validate design margins, ensuring the structural and thermal integrity of the spacecraft before flight qualification.</p>
+        </div>
+        <div class="project-image">
+            <img src="../assets/images/experiences/planet/spacexrocket.jpeg" alt="Planet Pelican on SpaceX TR">
+        </div>
+    </div>
+
+    <div class="skills-section">
+        <div class="skills-header">TOP SKILLS & TOOLS UTILIZED</div>
+        <div class="skills-grid">
+            <div class="skill-tag">Systems Engineering (V&V)</div>
+            <div class="skill-tag">Environmental Testing (AI&T)</div>
+            <div class="skill-tag">FEMM (Magnetics Modeling)</div>
+            <div class="skill-tag">OpenFOAM (CFD/Drag)</div>
+            <div class="skill-tag">GNC Development</div>
+            <div class="skill-tag">MATLAB & Python</div>
+        </div>
+    </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer-bar">
+  <div class="footer-container">
+    <div class="footer-left">
+      <a href="https://www.linkedin.com/in/alex-burns1/" target="_blank" class="linkedin-link">
+        <img src="../assets/images/LinkedIn_icon.png" alt="LinkedIn" class="linkedin-icon" />
+        <span class="linkedin-text">LinkedIn</span>
+      </a>
+    </div>
+
+    <div class="footer-copyright">
+      &copy; 2026 Alexander Burns
+    </div>
+
+    <div class="footer-right">
+      <a href="mailto:a2burns@ucsd.edu" class="email-link">a2burns@ucsd.edu</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
