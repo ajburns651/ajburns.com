@@ -26,19 +26,16 @@ function closeModal() {
   }
 }
 
-function isMobile() {
-  return window.matchMedia("(max-width: 768px)").matches;
-}
-
-
-// RESUME Link: Opens the PDF
+// Resume Button Test
 resumeBtn.onclick = (e) => {
-  if (isMobile()) {
-    // Let mobile open PDF normally in a new tab
-    e.preventDefault();
-    window.open("assets/resume.pdf", "_blank");
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const resumeUrl = "assets/resume.pdf";
+
+  if (isTouchDevice) {
+    e.preventDefault(); // prevent modal
+    window.open(resumeUrl, "_blank"); // open in new tab
   } else {
-    openModal(e, "assets/resume.pdf");
+    openModal(e, resumeUrl); // desktop modal
   }
 };
 
