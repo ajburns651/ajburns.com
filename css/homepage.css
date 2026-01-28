@@ -1,534 +1,663 @@
-/* BASE */
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #222;
-  line-height: 1.6;
-  overflow-x: hidden;
-  width: 100%;
+/* =========================================
+   1. CORE VARIABLES & RESET
+   ========================================= */
+:root {
+  --bg: #0b0e14;
+  --light: #f8fafc;
+  --muted: #94a3b8;
+  --accent: #38bdf8; 
+  --card-bg: rgba(15, 23, 42, 0.96); 
+  --font-header: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --border-color: rgba(56, 189, 248, 0.3);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.1); 
+  --depth-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); 
 }
 
-html {
-    overflow-x: hidden;
+/* BLUEPRINT MODE OVERRIDES */
+body.blueprint-mode {
+  --bg: #ffffff;
+  --light: #1e3a8a;
+  --muted: #475569;
+  --accent: #0369a1; 
+  --card-bg: #ffffff; 
+  --border-color: #0369a1; 
+  --glass-border: 1px solid #0369a1;
+  --font-header: 'Courier Prime', monospace;
+  --font-body: 'Courier Prime', monospace;
+  --depth-shadow: 4px 4px 0px rgba(3, 105, 161, 0.1); 
+  background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { 
+    scroll-behavior: smooth; 
+    overscroll-behavior-y: none;
 }
 
-/* NAV OVER HERO */
-.nav-overlay {
-  position: absolute;
-  width: 100%;
-  z-index: 10;
+body { 
+    font-family: var(--font-body); 
+    background: var(--bg); 
+    color: var(--light); 
+    text-align: center; 
+    overflow-x: hidden; 
+    transition: background 0.5s, color 0.5s; 
+    overscroll-behavior-y: auto;
 }
 
-.nav-container {
+body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+h1, h2, h3, .logo { font-family: var(--font-header); letter-spacing: -0.02em; }
+h1 { font-weight: 300; line-height: 1.1; }
+p { font-size: 1.05rem; line-height: 1.6; color: var(--muted); }
+body.blueprint-mode p { color: #334155; }
+
+/* =========================================
+   2. CANVAS & BACKGROUND
+   ========================================= */
+#space-canvas { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100dvh; 
+    z-index: -2; 
+    transition: opacity 0.5s; 
+    transform: translate3d(0,0,0); 
+    pointer-events: none;
+    image-rendering: -webkit-optimize-contrast;
+    /* Add smooth transition for the blur effect */
+    transition: filter 0.8s ease-out; 
+    will-change: filter;
+}
+
+/* This class will be added by JS */
+.canvas-paused {
+  filter: blur(8px); /* Adjust pixel amount for more/less blur */
+}
+
+.blueprint-grid { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100dvh; 
+    z-index: -1; 
+    pointer-events: none; opacity: 0; transition: opacity 0.5s; 
+    background-image: linear-gradient(rgba(3, 105, 161, 0.1) 1px, transparent 1px), 
+                      linear-gradient(90deg, rgba(3, 105, 161, 0.1) 1px, transparent 1px); 
+    background-size: 40px 40px; 
+}
+body.blueprint-mode .blueprint-grid { opacity: 1; }
+
+.hero-backdrop { 
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+    background: radial-gradient(closest-side, rgba(11, 14, 20, 0.6) 0%, rgba(11, 14, 20, 0) 100%); 
+    pointer-events: none; z-index: 1; 
+}
+body.blueprint-mode .hero-backdrop { display: none; }
+
+/* =========================================
+   3. NAVIGATION
+   ========================================= */
+nav { 
+    position:fixed; width:100%; top:0; 
+    background: rgba(11, 14, 20, 0.95); z-index:100; 
+    border-bottom: var(--glass-border); transition: background 0.5s; 
+}
+body.blueprint-mode nav { background: rgba(255, 255, 255, 0.95); }
+
+.nav-container { 
+    max-width:1200px; margin:0 auto; padding:1.25rem 2rem 1rem 2rem; 
+    display:flex; align-items:center; justify-content:center; position:relative; 
+}
+.logo { 
+    position: absolute; left: 2rem; z-index: 101; 
+    text-decoration: none; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.1);
+}
+
+.logo-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    object-fit: cover;
+    display: block;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+.logo:hover .logo-image {
+    border-color: var(--light);
+    box-shadow: 0 0 20px var(--accent);
+}
+
+.nav-menu { display:flex; gap:1.5rem; list-style:none; }
+nav a { text-decoration:none; color:var(--muted); font-weight:500; transition:0.2s; font-size: 0.95rem; }
+nav a:hover, nav a.active { color:var(--accent); }
+
+.menu-toggle { display:none; cursor:pointer; }
+.bar { display:block; width:25px; height:3px; margin:5px auto; background:var(--light); transition:0.3s; }
+
+@media(max-width:768px) { 
+    .menu-toggle { display:block; position:absolute; right:2rem; z-index:101; } 
+    .nav-menu { 
+        position:fixed; left:-100%; top:0; flex-direction:column; 
+        background:var(--bg); width:100%; height:100vh; padding-top:5rem; 
+        transition:0.3s; z-index:100; 
+    } 
+    .nav-menu.active { left:0; } 
+    .logo { position:static; } 
+    .nav-container { justify-content:space-between; } 
+}
+
+/* =========================================
+   4. HERO & SECTIONS
+   ========================================= */
+.hero { height:100vh; display:flex; justify-content:center; align-items:center; position: relative; }
+.hero-content { position:relative; z-index:2; max-width:900px; padding:0 1rem; }
+.hero h1 { font-size:clamp(3.5rem, 7vw, 6.5rem); margin-bottom:0.8rem; color: var(--light); font-weight: 400; text-shadow: 0 4px 30px rgba(0,0,0,0.5); }
+.subtitle { color:var(--accent); font-weight:500; font-size:1.4rem; letter-spacing: 1px; margin-bottom: 2rem; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+
+/* BLUEPRINT MODE HERO STYLES */
+body.blueprint-mode .hero h1 { color: #1e3a8a; text-shadow: none; }
+body.blueprint-mode .subtitle { text-shadow: none; }
+body.blueprint-mode .hero-content {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 3rem;
+    border: 2px solid #1e3a8a;
+    border-radius: 8px;
+    box-shadow: 8px 8px 0px rgba(30, 58, 138, 0.1);
+}
+body.blueprint-mode .hero-btn { background: #fff; border-color: #1e3a8a; color: #1e3a8a; }
+body.blueprint-mode .hero-btn:hover { background: #1e3a8a; color: #fff; }
+
+.section { padding: 5rem 1rem; max-width: 1200px; margin: auto; scroll-margin-top: 60px; }
+body { counter-reset: section; }
+section h2::before { counter-increment: section; content: "0" counter(section) ". "; color: var(--accent); opacity: 0.6; font-family: var(--font-header); font-weight: 400; font-size: 0.7em; margin-right: 10px; letter-spacing: 2px; }
+.section h2 { font-size:2.2rem; margin-bottom:2.5rem; display:inline-block; border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; color: var(--light); font-weight: 300; }
+body.blueprint-mode .section h2 { color: #1e3a8a; }
+
+/* =========================================
+   5. CARDS & TIMELINE
+   ========================================= */
+.content-box, .timeline-item .content, .project-card, .lab-item { 
+    background: var(--card-bg); border: var(--glass-border); 
+    box-shadow: var(--depth-shadow); transform: translate3d(0, 0, 0); 
+}
+.content-box { max-width: 800px; margin: 0 auto; padding: 2.5rem; border-radius: 8px; text-align: left; }
+
+.timeline-container { position: relative; max-width: 800px; margin: 0 auto; }
+.timeline-container::after { content: ''; position: absolute; width: 2px; background-color: var(--accent); top: 0; bottom: 0; left: 50%; margin-left: -1px; border-radius: 2px; z-index: 0; }
+.timeline-item { padding: 10px 40px; width: 50%; position: relative; text-align: left; z-index: 1; }
+.left { left: 0; text-align: right; } .right { left: 50%; text-align: left; }
+.timeline-item .content { padding:20px; border-radius:4px; transition: transform 0.2s ease, border-color 0.2s; cursor: pointer; position: relative; overflow: hidden; }
+.timeline-item .content:hover { transform: translateY(-3px); border-color: var(--accent); background: #111827; }
+.timeline-item::after { content: ''; position: absolute; width: 14px; height: 14px; background-color: var(--bg); border: 2px solid var(--accent); top: 25px; z-index: 2; border-radius: 50%; box-shadow: 0 0 10px var(--accent); }
+body.blueprint-mode .timeline-item::after { border-radius: 0; transform: rotate(45deg); box-shadow: none; width: 12px; height: 12px; }
+.left::after { right: -7px; } .right::after { left: -7px; }
+.content h3 { color: var(--accent); margin-bottom: 0.5rem; font-family: var(--font-header); }
+.content small { color: var(--muted); font-size: 0.8rem; font-style: italic; }
+
+@media screen and (max-width: 768px) { 
+    .timeline-container::after { left: 31px; } 
+    .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; text-align: left; } 
+    .left, .right { left: 0; text-align: left; } 
+    .left::after, .right::after { left: 24px; right: auto; } 
+}
+
+/* =========================================
+   6. PROJECT GRID
+   ========================================= */
+.project-grid { display:flex; flex-wrap:wrap; justify-content:center; gap:2rem; }
+.project-card { border-radius:4px; overflow:hidden; transition:0.2s; flex: 0 1 100%; display: flex; flex-direction: column; cursor: pointer; position: relative; }
+.project-card:hover { transform: translateY(-3px); border-color: var(--accent); background: #111827; }
+@media(min-width:768px) { .top-row { flex:0 1 calc(50% - 2rem); } .bottom-row { flex:0 1 calc(33.3% - 2rem); } }
+.experience-grid .project-card { flex: 0 1 calc(50% - 2rem); }
+.project-card img { width:100%; height:220px; object-fit:cover; transition: filter 0.3s; }
+body.blueprint-mode .project-card img { filter: none; }
+.project-summary { padding:1.5rem; text-align:left; flex-grow:1; display:flex; flex-direction:column; }
+.project-summary h3 { color: var(--accent); margin-bottom: 0.5rem; font-family: var(--font-header); }
+
+.expand-btn { display:block; width:100%; text-align:center; background: transparent; border:1px solid var(--muted); color: var(--muted); border-radius:4px; padding:0.6rem 0; margin-top:1rem; font-weight:600; font-size:0.85rem; transition:0.3s; pointer-events: none; font-family: var(--font-header); text-transform: uppercase; letter-spacing: 1px; }
+.project-card:hover .expand-btn { border-color: var(--accent); color: var(--accent); background: rgba(56, 189, 248, 0.1); }
+
+/* New Projects Grid with Overlay */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
   max-width: 1200px;
-  margin: auto;
-  padding: 1.2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
+  margin: 0 auto;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-}
-
-.logo img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  display: block;
-}
-
-.nav-links a {
-  margin-left: 1.5rem;
-  font-size: 1.15rem;
-}
-
-/* HERO */
-.hero {
-  height: 25vh;
-  max-height: 300px; /* Adjust this number to your preference */
-  background-size: cover;
-  background-position: center;
+.project-item {
   position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
+/* =========================================
+   BLUEPRINT MODE: PROJECT CARD OVERRIDES
+   ========================================= */
+
+/* 1. Make the overlay look like white paper/vellum */
+body.blueprint-mode .project-item .project-overlay {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--accent); /* Adds a nice drafting border */
 }
 
-.hero-content {
-  position: relative;
+/* 2. Ensure the text is the dark blueprint blue */
+body.blueprint-mode .overlay-content h3 {
+  color: var(--accent); /* #0369a1 */
+  text-shadow: none;    /* Remove any shadows from dark mode */
+  font-weight: 700;
+  text-decoration: underline; /* Optional: adds to the drafting look */
+}
+
+/* 3. Make description text dark and legible */
+body.blueprint-mode .overlay-content p {
+  color: #334155; /* Dark Slate */
+  font-weight: 500;
+}
+
+.project-item:hover {
+  transform: translateY(-5px);
+}
+
+.project-item {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.project-item img {
+  width: 100%;
   height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.project-item:hover img {
+  transform: scale(1.05);
+}
+
+.project-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-item:hover .project-overlay {
+  opacity: 1;
+}
+
+.overlay-content {
+  text-align: center;
+  color: white;
+  padding: 1.5rem;
+}
+
+.overlay-content h3 {
+  font-family: var(--font-header);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+
+.overlay-content p {
+  font-size: 1rem;
+  color: var(--light);
+  margin: 0;
+}
+
+/* =========================================
+   7. SKILLS
+   ========================================= */
+.skills { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; max-width: 700px; margin: 0 auto; }
+.skills span { padding:0.5rem 1rem; border:1px solid var(--accent); border-radius:4px; display:inline-block; background: rgba(56, 189, 248, 0.05); font-size: 0.9rem; font-weight: 500; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: all 0.3s ease; }
+.skills span:hover { background: rgba(56, 189, 248, 0.2); transform: translateY(-3px); box-shadow: 0 0 15px var(--accent); }
+
+/* =========================================
+   8. MODAL (CENTERED)
+   ========================================= */
+/* iframe should just be a window */
+iframe {
+    width: 100%;
+    height: 90vh;
+    border: none;
+    display: block;
+    background: #0b0e14;
+}
+
+.modal { 
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    position: fixed; 
+    top: 0; left: 0; 
+    width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.85); 
+    z-index: 200; 
+    backdrop-filter: blur(5px); 
+}
+.modal.open { display: flex !important; }
+
+.modal-content {
+  height: 90vh;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Vertically centers the entire group */
-  align-items: center;
-  color: white;
-  text-align: center;
-  /* Adjust this gap value to your liking for laptop vs monitor balance */
 }
 
-.hero h1 {
-  font-size: 3rem;
-  margin: 0; /* Removes the 4vh that pushed it down */
+#modal-iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  display: none;
 }
 
-.hero-subtitle {
-  letter-spacing: 2px;
-  font-size: 1rem;
-  margin: 0; /* Removes the -5vh that caused the overlap */
-}
 
-/* SUMMARY */
-.image-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 95%;
-}
 
-.image-wrapper img {
-  max-width: 1200px;   /* maximum stretch width */
-  width: 100%;         /* shrink on smaller screens */
-  height: auto;        /* preserve aspect ratio */
-  object-fit: contain;
-}
+.modal.open .modal-content { animation: modalLaunch 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+@keyframes modalLaunch { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-/* SECTIONS */
-.section {
-  padding: 4rem 0;
-}
+.close-modal {display: none; position:absolute; top:1rem; right:1.5rem; font-size:2rem; cursor:pointer; color: var(--muted); transition: 0.2s; }
+.close-modal:hover { color: var(--accent); }
+#modal-title { display: none; }
+.modal-actions { margin: 2rem 0; display: flex; gap: 1rem; flex-wrap: wrap; }
+.modal-content img { max-width:100%; max-height: 50vh; object-fit: contain; margin-top:1rem; border-radius:8px; display: block; margin-left: auto; margin-right: auto; }
+#modal-description h3 { color: var(--accent); font-family: var(--font-header); font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.8rem; letter-spacing: 0.5px; text-transform: uppercase; font-size: 1.1rem; }
+#modal-description p { font-family: var(--font-body); font-weight: 300; font-size: 1rem; line-height: 1.7; color: var(--light); opacity: 0.9; }
+#modal-description ul { margin-left: 1.2rem; margin-bottom: 1.5rem; list-style-type: none; }
+#modal-description li { position: relative; font-weight: 300; margin-bottom: 0.6rem; padding-left: 0.5rem; color: var(--light); }
+#modal-description li strong { color: var(--accent); font-weight: 600; }
+#modal-description li::before { content: '>'; color: var(--accent); position: absolute; left: -1.2rem; font-family: monospace; font-weight: bold; }
+#skills-header { color: var(--accent); margin-top: 2rem; margin-bottom: 0.8rem; font-family: var(--font-header); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
 
-.container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 0 1rem;
-}
+#modal-3d-container { width: 100%; margin-bottom: 2rem; display: none; position: relative; height: 500px; }
+model-viewer { width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.2); border: 1px solid var(--border-color); border-radius: 8px; }
+body.blueprint-mode model-viewer { background-color: #f0f0f0; border-color: #000; }
 
-section.container h2 {
-  text-align: center;
-  margin-bottom: 0rem; /* Adds some space below the title */
-  width: 100%;         /* Ensures the text aligns relative to the full container width */
-  font-size: 35px;
+#modal-chart-container { 
+    max-width: 600px; margin: 2rem auto; position: relative; height: 350px; 
+    background: rgba(15, 23, 42, 0.4); border-radius: 12px; padding: 10px;
 }
+body.blueprint-mode #modal-chart-container { background: rgba(0, 0, 0, 0.05); }
+body.blueprint-mode #modal-chart-container canvas { filter: invert(1) hue-rotate(180deg); }
 
-.two-column {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-}
+#modal-code-container { margin: 1.5rem 0; background: #1e1e1e; border: 1px solid var(--border-color); border-radius: 6px; padding: 1rem; overflow-x: auto; }
+#modal-code-container h4 { color: var(--accent); margin-bottom: 0.5rem; font-family: 'Courier Prime', monospace; font-size: 0.9rem; }
+.code-block { font-family: 'Courier Prime', monospace; font-size: 0.85rem; color: #d4d4d4; white-space: pre-wrap; margin: 0; }
+body.blueprint-mode #modal-code-container { background: #f5f5f5; border-color: #ccc; }
+body.blueprint-mode .code-block { color: #333; }
 
-/* TIMELINE */
-/* TIMELINE LOGO ROW */
+#modal-video-container { margin-top: 1.5rem; width: 100%; }
+.video-label { color: var(--accent); font-family: var(--font-header); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 0.8rem; text-align: left; }
+body.blueprint-mode .video-label { color: #1e3a8a; }
+body.blueprint-mode #modal-video-container video { border-color: #000 !important; background: #fff; }
+
+.spec-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; font-family: 'Courier Prime', monospace; border: 1px solid var(--border-color); }
+.spec-table th, .spec-table td { padding: 0.8rem; border-bottom: 1px solid rgba(56, 189, 248, 0.1); text-align: left; }
+.spec-table th { background: rgba(56, 189, 248, 0.1); color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+.spec-table tr:last-child td { border-bottom: none; }
+body.blueprint-mode .spec-table th { background: rgba(0,0,0,0.1); color: #000; }
+body.blueprint-mode .spec-table td { color: #333; border-bottom-color: rgba(0,0,0,0.1); }
+
+.contact-form { max-width:600px; margin:auto; display:flex; flex-direction:column; gap:1rem; }
+.form-group { display:flex; gap:1rem; }
+input, textarea { background:rgba(255,255,255,0.05); border:1px solid var(--border-color); padding:1rem; color:var(--light); width:100%; font-family: inherit; border-radius: 4px; }
+input:focus, textarea:focus { border-color: var(--accent); outline: none; background: rgba(96, 165, 250, 0.05); }
+body.blueprint-mode input, body.blueprint-mode textarea { background: #fff; }
+
+.rocket-emoji { position: absolute; font-size: 2.5rem; z-index: 1000; pointer-events: none; filter: drop-shadow(0 0 10px rgba(255, 100, 0, 0.5)); }
+.exhaust-particle { position: absolute; border-radius: 50%; pointer-events: none; z-index: 999; mix-blend-mode: screen; filter: blur(1px); }
+
+.btn { display:inline-block; padding:0.8rem 2rem; border-radius:6px; background:rgba(56, 189, 248, 0.1); border:1px solid var(--accent); color:var(--accent); font-weight:600; text-decoration:none; transition: all 0.3s ease; margin-top:1.5rem; cursor:pointer; backdrop-filter: blur(5px); font-family: var(--font-header); letter-spacing: 0.5px; }
+.btn:hover { background:var(--accent); color: var(--bg); transform: translateY(-5px); box-shadow: 0 0 25px var(--accent); }
+
+#loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s; font-family: var(--font-header); font-weight: 500; }
+.loader { border: 3px solid rgba(56, 189, 248, 0.2); border-top: 3px solid var(--accent); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 1rem; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+footer { text-align:center; padding:3rem 1rem; color:var(--muted); font-size: 0.9rem; border-top: 1px solid var(--border-color); }
+.footer-links { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.footer-btn { padding: 0.5rem 1.5rem; border: 1px solid var(--border-color); border-radius: 4px; color: var(--accent); text-decoration: none; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; background: rgba(30, 41, 59, 0.3); backdrop-filter: blur(5px); font-family: var(--font-header); font-size: 0.9rem; position: relative; }
+.footer-btn:hover { background: rgba(56, 189, 248, 0.2); color: #fff; border-color: var(--accent); transform: translateY(-2px); }
+
+.system-status-bar { display: flex; justify-content: center; gap: 2rem; font-family: monospace; font-size: 0.85rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.status-item { display: flex; align-items: center; gap: 0.5rem; }
+.highlight { color: var(--accent); }
+.status-indicator { width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: inline-block; }
+.blinking { animation: blinker 1.5s cubic-bezier(0.5, 0, 1, 1) infinite alternate; }
+@keyframes blinker { from { opacity: 1; } to { opacity: 0.3; } }
+.copyright { opacity: 0.6; font-size: 0.8rem; }
+.tech-stack { color: var(--muted); font-size: 0.8rem; margin-bottom: 1rem; opacity: 0.6; }
+
+.fade-in { opacity:0; transform:translateY(20px) translate3d(0,0,0); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+.fade-in.visible { opacity:1; transform:translateY(0); }
+
+.rocket-btn { position:fixed; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:99; transition: all 0.3s; border: 1px solid var(--border-color); color: var(--accent); bottom:2rem; right:2rem; background: rgba(11, 14, 20, 0.9); opacity:0; pointer-events:none; }
+.rocket-btn:hover { border-color: var(--accent); color: #fff; transform: translateY(-3px); }
+.rocket-btn.show { opacity:1; pointer-events:all; }
+.rocket-btn.liftoff { animation: launchRocket 1s ease-in forwards; pointer-events: none; }
+@keyframes launchRocket { 0% { transform: translateY(0) scale(1); } 20% { transform: translateY(10px) scale(0.9); } 100% { transform: translateY(-120vh) scale(1.2); opacity: 0; } }
+.ctrl-label { position: absolute; background: rgba(11, 14, 20, 0.95); border: 1px solid var(--accent); color: var(--accent); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; opacity: 0; transition: 0.3s; pointer-events: none; white-space: nowrap; font-family: var(--font-header); top: 50%; transform: translateY(-50%); letter-spacing: 1px; }
+.left-side { right: 65px; } .right-side { left: 65px; }
+.rocket-btn:hover .ctrl-label { opacity: 1; }
+
+.blueprint-btn { position:fixed; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:99; transition: all 0.3s; border: 1px solid var(--border-color); color: var(--accent); bottom: 2rem; left: 2rem; background: rgba(11, 14, 20, 0.9); opacity: 0.8; }
+.blueprint-btn:hover { opacity: 1; border-color: var(--accent); color: #fff; }
+.blueprint-btn:hover .ctrl-label { opacity: 1; }
+
+.icon-cosmos { display: none; }
+body.blueprint-mode .icon-drafting { display: none; }
+body.blueprint-mode .icon-cosmos { display: block; }
+
+/* =========================================
+   NEW EXPERIENCE TIMELINE (Photo Left / Card Right)
+   ========================================= */
+
+/* 1. Logos at top */
 .logo-row {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Prevent logos from moving to a new line */
-  flex-wrap: nowrap; 
-  /* Use a flexible gap that shrinks with the screen */
-  gap: clamp(20px, 8vw, 200px); 
-  margin-bottom: 60px;
-  margin-top: 20px;
-  width: 100%;
-  padding: 0 20px;
-  box-sizing: border-box;
-  /* Hide any overflow just in case, though the shrink logic should prevent it */
-  overflow: hidden; 
+  gap: 3rem;
+  margin-bottom: 4rem;
+  flex-wrap: wrap;
 }
-
-.logo-row img {
-  /* This allows the images to shrink as the container gets smaller */
-  height: auto;
-  max-height: 100px; 
-  width: auto;
-  /* Ensures the logo takes up a percentage of the row at most */
-  max-width: 15%; 
-  opacity: 1.0;
-  object-fit: contain;
-  /* Essential for shrinking */
-  flex-shrink: 1; 
+.logo-item {
+  font-family: var(--font-header);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--muted);
+  opacity: 0.7;
+  transition: 0.3s;
 }
+.logo-item:hover { opacity: 1; color: var(--accent); }
 
-/* ===== Timeline colors ===== */
-:root {
-  --accent-blue: #4aa3df;
-  --line-gray: #dcdcdc;
-  --text-gray: #5f5f5f;
-  --card-bg: #f1f3f6;
-}
-
-/* ===== Timeline base ===== */
-.timeline-container {
+/* 2. Timeline Grid Layout */
+.timeline-layout {
   position: relative;
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
-  overflow: visible;
-  padding: 0 40px; 
-  box-sizing: border-box; 
 }
 
+/* The vertical center line */
 .timeline-line {
   position: absolute;
   left: 50%;
   top: 0;
   bottom: 0;
   width: 2px;
-  background: var(--line-gray);
-  transform: translateX(-50%);
+  background: var(--border-color); /* Matches your blue grid lines */
+  transform: translateX(-1px);
+  z-index: 0;
 }
 
-.timeline-line::before {
-  content: "";
-  position: absolute;
-  top: -10px;          /* Pulls it slightly above the start of the line */
-  left: 50%;           /* Centers it horizontally */
-  transform: translateX(-50%); /* Ensures it is perfectly centered on the line */
-  width: 12px;         /* Diameter of the circle */
-  height: 12px;
-  background-color: var(--line-gray); /* Matches your timeline line color */
-  border-radius: 50%;  /* Makes it a circle */
+/* Each Row: Image | Dot | Content */
+.timeline-row {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr; /* 3 Columns */
+  align-items: center;
+  margin-bottom: 5rem; /* Space between rows */
+  position: relative;
   z-index: 1;
 }
 
-/* ---------- Timeline Entries ---------- */
-.timeline-entry {
+/* --- LEFT COLUMN (IMAGE) --- */
+.col-left {
   display: flex;
-  flex-direction: column;
-  position: relative;
-  width: 50%;
-  padding: 30px 50px;
-  margin-bottom: 70px;
+  justify-content: flex-end; /* Push image against the center line */
+  padding-right: 30px;
 }
-
-/* Align the Date with the Dot */
-.timeline-entry .date {
-  display: flex;
-  align-items: center; /* Vertically centers text with the dot */
-  height: 36px;        /* Matches the height of your .dot class */
-  margin-bottom: 10px; /* Space between date and card */
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text-gray);
-}
-
-.timeline-entry.right {
-  left: 50%;
-  text-align: left;
-}
-
-/* ---------- Dots ---------- */
-.dot {
-  position: absolute;
-  top: 30px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  color: #fff;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-}
-
-.right .dot {
-  left: -18px;
-}
-
-.dot.planet {
-  background: #4285F4;
-}
-
-.dot.viasat {
-  background: #4285F4;
-}
-
-/* ---------- Cards ---------- */
-.card {
-  background: var(--card-bg);
-  border-radius: 10px;
-  padding: 24px 28px;
-  max-width: 420px;
-
-  /* subtle blue outline like reference */
-  border: 1.5px solid rgba(74, 163, 223, 0.6);
-
-  /* refined elevation */
-  box-shadow:
-    0 10px 26px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(74, 163, 223, 0.06);
-}
-
-.right .card {
-  margin-left: 0;
-}
-
-/* ===== Titles ===== */
-.card h3 {
-  margin: 0 0 12px;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--accent-blue);
-}
-
-.card img {
+.timeline-img-wrapper {
   width: 100%;
-  border-radius: 6px;
-  margin-bottom: 8px;
+  max-width: 380px;
+  aspect-ratio: 16/9;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Deep shadow */
+  border: 1px solid var(--border-color);
+  background: rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
 }
-
-.card p {
-  margin: 0;
-  font-size: 15.5px;
-  line-height: 1.55;
-  color: #444;
+.timeline-img-wrapper:hover {
+  transform: scale(1.03);
+  border-color: var(--accent);
 }
-
-.read-more {
-  display: inline-block;
-  margin-top: 0px;
-  font-weight: 600;
-  color: #ff2d55; /* Vibrant pink/red color from your image */
-  text-decoration: none;
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
-}
-
-/* Hover effect for better interactivity */
-.read-more:hover {
-  color: #d11d41; /* Slightly darker on hover */
-  text-decoration: underline;
-  transform: translateX(5px); /* Subtle nudge to the right */
-}
-
-
-.card .read-more {
-  align-self: flex-end; /* Pushes the link to the right edge of the card */
-}
-
-/* ===== Timeline Image ===== */
-.timeline-image {
-  position: absolute;
-  top: 0;
-  width: 400px;
-  z-index: 10;
-}
-
-.timeline-image.left {
-  right: 100%;
-  margin-right: 50px;
-}
-
-.timeline-image img {
+.timeline-img-wrapper img {
   width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.5);
   display: block;
 }
 
-
-/* Projects Grid Layout */
-/* Add this to tighten the start of the projects section */
-#projects.section {
-    padding-top: 0rem; /* Reduced from 4rem */
-}
-/* Center the entire project block to match the timeline width */
-.projects-wrapper {
-    max-width: 1100px; /* Exact match to your .timeline-container */
-    margin: 0 auto;    /* Centers the block on the page */
-    padding: 0 40px;   /* Matches the timeline gutter padding */
-    box-sizing: border-box;
-}
-
-/* Center the Title specifically */
-.projects-wrapper h2 {
-    text-align: center;
-    margin-bottom: 40px;
-    font-size: 35px;
-    width: 100%;
-}
-
-/* The Grid */
-.projects-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px; /* Space between columns */
-    width: 100%;
-}
-
-/* Re-apply the centering for your Hover Overlay */
-.project-overlay {
-    position: absolute;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;             /* Vital for centering text */
-    justify-content: center;    /* Horizontal center */
-    align-items: center;        /* Vertical center */
-    text-align: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.project-item:hover .project-overlay {
-    opacity: 1;
-}
-
-/* Overlay Text Styling */
-.overlay-content h3 {
-    color: white;
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
-
-.overlay-content p {
-    color: #ccc;
-    font-size: 1rem;
-    font-style: italic;
-    margin: 0;
-}
-
-/* 1. The Container: Defines the "Window" size */
-.project-item {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 10; /* Forces a consistent rectangular shape */
-    border-radius: 12px;
-    overflow: hidden;      /* Clips anything that sticks out */
-    box-sizing: border-box;
-}
-
-/* 2. The Image: Forces the actual photo to shrink and fit */
-.project-item img {
-    width: 100%;           /* Shrinks image width to match container */
-    height: 100%;          /* Shrinks image height to match container */
-    object-fit: cover;     /* Crops the photo to fill the box without squishing */
-    display: block;        /* Removes random bottom gaps */
-}
-
-/* Optional: Slight zoom on the image when hovering */
-.project-item:hover img {
-    transform: scale(1.05);
-}
-
-/* FOOTER */
-/* Footer Bar Styling */
-.footer-bar {
-  background-color: #f4f4f4; /* Light grey background bar */
-  padding: 1.5rem 0;
-  width: 100%;
-  border-top: 1px solid #ddd; /* Subtle line to separate from content */
-}
-
-.footer-container {
-  max-width: 1300px; /* Matches your site's content width */
-  margin: 0 auto;
-  padding: 0 1.5rem;
+/* --- CENTER COLUMN (DOT) --- */
+.col-center {
   display: flex;
-  justify-content: space-between; /* Pushes content to the far left and right */
+  justify-content: center;
   align-items: center;
+  height: 100%;
 }
-
-.footer-item {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
+.timeline-dot {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  color: #fff;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  font-weight: 700;
+  font-family: var(--font-header);
   font-size: 0.9rem;
+  z-index: 2;
+  border: 4px solid var(--bg); /* Creates gap between dot and line */
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
 }
+/* Brand Colors for Dots */
+.dot-lsdo { background: #3b82f6; }   /* Blue */
+.dot-planet { background: #00f3ff; color: #000; } /* Cyan */
+.dot-viasat { background: #1e3a8a; } /* Navy */
 
-/* LinkedIn Specific Styling */
-.linkedin-link {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  color: #000;
-  font-weight: 500;
+/* --- RIGHT COLUMN (CARD) --- */
+.col-right {
+  padding-left: 30px;
+  text-align: left;
 }
-
-.linkedin-icon {
-  height: 24px;
-  width: auto;
+.date-label {
+  font-family: var(--font-header);
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+  display: block;
 }
-
-/* Email Specific Styling */
-.email-link {
-  text-decoration: none;
-  color: #007bff;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-
-.email-link:hover {
-  color: #0056b3; /* Changes to your accent blue on hover */
-}
-
-.footer-copyright {
-  font-size: 0.85rem;
-  color: #666;
-  font-weight: 400;
-}
-
-.footer-icon {
-  height: 18px;
-  width: auto;
-}
-
-/* RESUME STUFF */
-/* Modal Background */
-.modal {
-  display: none; 
-  position: fixed; 
-  z-index: 1000; 
-  left: 0;
-  top: 0;
-  width: 100%; 
-  height: 100%; 
-  background-color: rgba(0, 0, 0, 0.8); /* Dims the background */
-  backdrop-filter: blur(5px);
-}
-
-/* Modal Content Box */
-.modal-content {
-  position: relative;
-  background-color: #fff;
-  margin: 2% auto; 
-  padding: 3px;
-  width: 85%;
-  height: 90vh; /* Takes up 90% of screen height */
+.exp-card {
+  background: var(--card-bg); /* Your existing dark glass bg */
+  border: var(--glass-border);
+  padding: 1.8rem;
   border-radius: 8px;
+  transition: 0.3s;
+  position: relative;
 }
-
-/* Close Button (X) */
-.close-btn {
-  position: absolute;
-  top: -41px;
-  right: 0;
-  color: white;
-  font-size: 35px;
-  font-weight: bold;
-  cursor: pointer;
+.exp-card:hover {
+  border-color: var(--accent);
+  transform: translateX(5px);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
 }
+.exp-card h3 {
+  color: var(--accent); /* Cyan title */
+  font-size: 1.15rem;
+  margin-bottom: 0.8rem;
+}
+.exp-card p {
+  font-size: 0.95rem;
+  margin-bottom: 1.2rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.read-more {
+  font-family: var(--font-header);
+  font-weight: 600;
+  color: #f43f5e; /* Red/Pink accent like reference image */
+  text-decoration: none;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: 0.2s;
+}
+.read-more:hover { gap: 10px; color: #fb7185; }
+.read-more::after { content: '→'; }
 
-.close-btn:hover {
-  color: var(--accent-blue);
-  transform: scale(1.1); /* Slightly enlarge */
-  transition: transform 0.2s ease;
+/* 3. Mobile Responsiveness */
+@media (max-width: 900px) {
+  .timeline-row {
+    grid-template-columns: 1fr; /* Stack vertically */
+    gap: 1rem;
+    margin-bottom: 4rem;
+  }
+  .timeline-line {
+    left: 22px; /* Move line to left edge */
+  }
+  .col-left {
+    display: none; /* Hide large images on mobile to save space */
+  }
+  .col-center {
+    justify-content: flex-start;
+    margin-bottom: -10px;
+  }
+  .col-right {
+    padding-left: 60px; /* Make space for the dot/line on the left */
+  }
 }
