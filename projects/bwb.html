@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manta BWB</title>
+  <link rel="stylesheet" href="../css/experiences.css">
+  <style>
+    body { background-color: #ffffff; color: #222; }
+
+    /* Compact Dark Hero Banner */
+    .project-page-hero {
+      height: 280px;
+      background: linear-gradient(rgba(11, 14, 20, 0.78), rgba(11, 14, 20, 0.88)),
+                  url('../assets/images/projects/bwb/render.png') center/cover no-repeat;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .hero-content h1 {
+      font-size: 2.6rem;
+      margin-bottom: 0.3rem;
+      font-weight: 400;
+    }
+
+    .project-page-hero-subtitle {
+      font-size: 1.1rem;
+      color: #67e8f9;
+      letter-spacing: 1px;
+    }
+
+    /* Compact Table */
+    .spec-table th, .spec-table td {
+      padding: 0.65rem 1rem;
+      font-size: 0.95rem;
+    }
+
+    .spec-table { margin: 1.2rem 0 2rem 0; }
+
+    .analysis-box {
+      background: #f8fafc;
+      border-left: 5px solid #0369a1;
+      padding: 1.4rem;
+      margin: 1.8rem 0;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="project-page-hero">
+  <div class="hero-content">
+    <h1>Manta BWB</h1>
+    <p class="project-page-hero-subtitle">Ultra Fuel-Efficient 250-Passenger Blended Wing Body</p>
+    <p style="font-size:0.95rem; opacity:0.9;">MAE 155A Conceptual Design Review • UC San Diego • March 2026</p>
+  </div>
+</header>
+
+<main class="project-detail-container" style="padding-top: 1.8rem;">
+
+  <!-- OVERVIEW -->
+  <section class="experience-section">
+    <div class="project-row">
+      <div class="project-text">
+        <p>
+          <strong>Manta</strong> is a conceptual <span class="highlight">Blended Wing Body (BWB)</span> aircraft designed for ultra-high fuel efficiency in the 250-passenger long-haul market. 
+          By using the fuselage as the primary lifting body, it achieves a cruise <strong>L/D of 25.30</strong>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- KEY SPECIFICATIONS -->
+  <section class="experience-section">
+    <h3 class="experience-title">Key Specifications (CoDR Configuration)</h3>
+
+    <table class="spec-table">
+      <tr><th>Parameter</th><th>Value</th></tr>
+      <tr><td>Range</td><td>7,400 nmi</td></tr>
+      <tr><td>Cruise Mach</td><td>0.85 @ 40,000 ft</td></tr>
+      <tr><td>Capacity</td><td>250 (3-class)</td></tr>
+      <tr><td>Wingspan</td><td>64.67 m (Code E compliant)</td></tr>
+      <tr><td>Aspect Ratio</td><td>5.03</td></tr>
+      <tr><td>Cruise L/D</td><td><strong>25.30</strong></td></tr>
+      <tr><td>MTOW</td><td>1,435,394 N (~146,370 kg)</td></tr>
+      <tr><td>CASM</td><td>$0.0873</td></tr>
+      <tr><td>Engines</td><td>2 × aft high-bypass (BPR 9.1) with BLI</td></tr>
+    </table>
+  </section>
+
+  <!-- AIRCRAFT CONCEPT -->
+  <section class="experience-section">
+    <h3 class="experience-title">Aircraft Concept</h3>
+    <div class="project-row">
+      <div class="project-image">
+        <img src="../assets/images/projects/bwb/render.png" alt="Manta BWB Render" style="width:100%; border-radius:8px;">
+      </div>
+    </div>
+  </section>
+
+  <!-- CABIN LAYOUT -->
+  <section class="experience-section">
+    <h3 class="experience-title">Cabin Layout</h3>
+    <div class="project-row">
+      <div class="project-image">
+        <img src="../assets/images/projects/bwb/cabin.png" alt="Cabin Layout" style="width:100%; border-radius:8px;">
+      </div>
+    </div>
+  </section>
+
+  <!-- DESIGN ANALYSIS -->
+  <section class="experience-section">
+    <h3 class="experience-title">Design Analysis & Optimization</h3>
+
+    <div class="analysis-box">
+      <p><strong>Master Script</strong>: Integrated OpenVSP, AVL, weights, structures, and cost for rapid iteration.</p>
+    </div>
+
+    <h4 style="color:#0369a1;">Particle Swarm Optimization (PSO)</h4>
+    <div class="project-row">
+      <div class="project-text">
+        <p>Gradient-free PSO maximized cruise L/D subject to stress and stability constraints.</p>
+        <p><strong>Result:</strong> L/D improved from 24.85 to <strong>25.30</strong>.</p>
+      </div>
+      <div class="project-image">
+        <img src="../assets/images/projects/bwb/PSO.png" alt="PSO Results" style="width:100%; border-radius:8px;">
+      </div>
+    </div>
+
+    <h4 style="color:#0369a1; margin-top:2rem;">Monte Carlo Sensitivity Analysis</h4>
+    <div class="project-row">
+      <div class="project-text">
+        <p>Latin Hypercube sampling (±40%) identified key drivers: aspect ratio for L/D, chord for cost.</p>
+        <p>Validated final geometry and ruled out folding wings.</p>
+      </div>
+      <div class="project-image">
+        <img src="../assets/images/projects/bwb/CGSM.png" alt="Monte Carlo Results" style="width:100%; border-radius:8px;">
+      </div>
+    </div>
+  </section>
+
+  <!-- VIEW DOCUMENTS -->
+  <section class="experience-section" style="text-align:center; margin-top:2.5rem;">
+    <h3 class="experience-title">View Documents</h3>
+    <div style="display:flex; gap:1.2rem; justify-content:center; flex-wrap:wrap;">
+      <a href="../assets/docs/MAE155_Team2_CoDR_Slides.pdf" target="_blank" class="btn" 
+         style="background:#0369a1; color:white; padding:0.85rem 2rem; border-radius:6px; text-decoration:none; font-weight:600;">
+        📊 View Presentation
+      </a>
+      <a href="../assets/docs/MAE155_Team2_CoDR.pdf" target="_blank" class="btn" 
+         style="background:#0369a1; color:white; padding:0.85rem 2rem; border-radius:6px; text-decoration:none; font-weight:600;">
+        📘 View Latex Report
+      </a>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>
