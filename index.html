@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alex Burns | AE Portfolio</title>
-  
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
-  </script>
+  <title>Alexander Burns | Aerospace Engineering Portfolio</title>
+  <meta name="description"
+    content="Aerospace engineer specializing in GNC and autonomous systems. Stanford M.S. Aero/Astro, UC San Diego B.S. Flight software and simulation at Starfish Space, Planet, and Viasat.">
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛰️</text></svg>">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛰️</text></svg>">
 
   <meta property="og:title" content="Alexander Burns | Aerospace Engineering Portfolio">
-  <meta property="og:description" content="M.S. Stanford University and B.S. UCSD Aerospace Engineering Student specializing in GNC and Autonomous Systems.">
+  <meta property="og:description"
+    content="Aerospace engineer specializing in GNC and autonomous systems. Flight software and simulation at Starfish Space, Planet, and Viasat.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ajburns.com/">
+  <meta property="og:image" content="https://ajburns.com/assets/images/otter.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="675">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Inter:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Inter:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/homepage.css">
-
-  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
   <div id="loading-screen">
@@ -33,7 +35,6 @@
   </div>
 
   <canvas id="space-canvas"></canvas>
-  <div class="blueprint-grid"></div>
 
   <nav>
     <div class="nav-container">
@@ -45,7 +46,8 @@
         <span class="bar"></span><span class="bar"></span><span class="bar"></span>
       </div>
       <ul class="nav-menu">
-        <li><a href="#experiences">Experiences</a></li>
+        <li><a href="#experiences">Internships</a></li>
+        <li><a href="#research">Research</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="assets/resume.pdf" target="_blank" class="resume-link">Resume</a></li>
@@ -64,7 +66,8 @@
         Specializing in Astrodynamics, Controls, and Autonomous Systems.
       </p>
       <div class="hero-buttons">
-        <a href="#experiences" class="btn hero-btn">View Experiences</a>
+        <a href="#experiences" class="btn hero-btn">View Internships</a>
+        <a href="#research" class="btn hero-btn">View Research</a>
         <a href="#contact" class="btn hero-btn">Contact Me</a>
       </div>
     </div>
@@ -73,93 +76,157 @@
   <section id="about" class="section fade-in">
     <h2>Summary</h2>
     <div class="content-box">
-      <p>Incoming first year graduate student at Stanford. Experiences as a GNC and Systems Engineer and as a Satellite Operator from internships at Starfish Space, Planet Labs, and ViaSat. Prior research in optimization methods through the LSDO Lab at UCSD, and significant collaborative and technical skills learned from multiple project teams.</p>
-   </div>
+      <p>Incoming first year graduate student at Stanford. Experiences as a GNC and Systems Engineer and as a Satellite
+        Operator from internships at Starfish Space, Planet Labs, and ViaSat. Prior research in optimization methods
+        through the LSDO Lab at UCSD, and significant collaborative and technical skills learned from multiple project
+        teams.</p>
+    </div>
   </section>
 
   <section id="experiences" class="section fade-in">
-  <h2>Experiences</h2>
+    <h2>Internships</h2>
 
-  <div class="timeline-layout">
-    
-    <div class="timeline-line"></div>
+    <div class="timeline-layout">
 
-    <div class="timeline-row">
-      <div class="col-left">
-        <div class="timeline-img-wrapper">
-           <img src="assets/images/lsdo.gif" alt="LSDO Simulation" loading="lazy">
+      <div class="timeline-line"></div>
+
+      <div class="timeline-row">
+        <div class="col-left">
+          <div class="timeline-img-wrapper">
+            <img src="assets/images/otter.jpg" alt="Starfish Space Otter Servicing Vehicle" loading="lazy">
+          </div>
+        </div>
+        <div class="col-center">
+          <div class="timeline-dot dot-starfish">SF</div>
+        </div>
+        <div class="col-right">
+          <div class="date-label">2026 Summer</div>
+          <div class="exp-card">
+            <h3>Starfish Space — GNC Engineering Intern</h3>
+            <p>
+              Rendezvous and proximity operations flight software for the Otter servicing
+              vehicle: a modular attitude control framework, high-fidelity solar array shadowing, and a SIL thermal
+              controller.
+            </p>
+            <a href="experiences/starfish.html" class="read-more" data-project="experiences/starfish.html">Read More</a>
+            <a href="experiences/starfish.html#sandbox" class="read-more try-it"
+              data-project="experiences/starfish.html#sandbox">Try the controller</a>
+          </div>
         </div>
       </div>
-      <div class="col-center">
-        <div class="timeline-dot dot-lsdo">L</div>
-      </div>
-      <div class="col-right">
-        <div class="date-label">2025 – Present</div>
-        <div class="exp-card">
-          <h3>UCSD - Design Optimization Laboratory</h3>
-          <p>
-            Aircraft and quadrotor design optimization integrating aerodynamics, 
-            GNC constraints, and mission performance.
-          </p>
-          <a href="javascript:void(0)" class="read-more" data-project="experiences/lsdo.html">Read More</a>
+
+      <div class="timeline-row">
+        <div class="col-left">
+          <div class="timeline-img-wrapper">
+            <img src="assets/images/pelican.jpg" alt="Planet Satellite" loading="lazy">
+          </div>
+        </div>
+        <div class="col-center">
+          <div class="timeline-dot dot-planet">PL</div>
+        </div>
+        <div class="col-right">
+          <div class="date-label">2025 Summer</div>
+          <div class="exp-card">
+            <h3>Planet — Systems Engineering Intern</h3>
+            <p>
+              Systems analysis and risk reduction for the Pelican Block II program. Built a
+              power and drag simulation framework accurate to <strong>within 2%</strong>, and
+              cleared un-characterized ferromagnetic payload materials as a GNC pointing risk.
+            </p>
+            <a href="experiences/planetlabs.html" class="read-more" data-project="experiences/planetlabs.html">Read
+              More</a>
+          </div>
         </div>
       </div>
+
+      <div class="timeline-row">
+        <div class="col-left">
+          <div class="timeline-img-wrapper">
+            <img src="assets/images/scc.jpg" alt="Viasat Control Center" loading="lazy">
+          </div>
+        </div>
+        <div class="col-center">
+          <div class="timeline-dot dot-viasat">VS</div>
+        </div>
+        <div class="col-right">
+          <div class="date-label">2023 – 2025</div>
+          <div class="exp-card">
+            <h3>Viasat — Satellite Operations Intern</h3>
+            <p>
+              <strong>Two years</strong> operating GEO comsats on the SSL FS1300 and Boeing
+              702HP buses &mdash; station-keeping maneuver planning, Python tooling for TT&amp;C
+              interference mitigation, and live commanding under the SatPi program.
+            </p>
+            <a href="experiences/viasat.html" class="read-more" data-project="experiences/viasat.html">Read More</a>
+          </div>
+        </div>
+      </div>
+
     </div>
+  </section>
 
-    <div class="timeline-row">
-      <div class="col-left">
-        <div class="timeline-img-wrapper">
-           <img src="assets/images/pelican.jpg" alt="Planet Satellite" loading="lazy">
+  <section id="research" class="section fade-in">
+    <h2>Research</h2>
+
+    <div class="timeline-layout">
+
+      <div class="timeline-line"></div>
+
+      <div class="timeline-row upcoming">
+        <div class="col-left">
+          <div class="timeline-img-wrapper logo-wrapper">
+            <img src="assets/images/slablogo.png" alt="Stanford Space Rendezvous Laboratory" loading="lazy">
+          </div>
+        </div>
+        <div class="col-center">
+          <div class="timeline-dot dot-slab">SL</div>
+        </div>
+        <div class="col-right">
+          <div class="date-label">Fall 2026 — Incoming</div>
+          <div class="exp-card">
+            <h3>Stanford Space Rendezvous Laboratory (SLAB)</h3>
+            <p>
+              Joining as a M.S. student contributing to spacecraft
+              rendezvous and distributed space systems.
+            </p>
+          </div>
         </div>
       </div>
-      <div class="col-center">
-        <div class="timeline-dot dot-planet">PL</div>
-      </div>
-      <div class="col-right">
-        <div class="date-label">2025 Summer</div>
-        <div class="exp-card">
-          <h3>Planet — Systems Engineering Intern</h3>
-          <p>
-            Spacecraft systems analysis, risk reduction, and environmental testing 
-            support for the Pelican Block II program (GNC, Power, Structural).
-          </p>
-          <a href="javascript:void(0)" class="read-more" data-project="experiences/planetlabs.html">Read More</a>
+
+      <div class="timeline-row">
+        <div class="col-left">
+          <div class="timeline-img-wrapper">
+            <video src="assets/images/lsdo.mp4" autoplay loop muted playsinline preload="metadata"
+              aria-label="LSDO Simulation"></video>
+          </div>
+        </div>
+        <div class="col-center">
+          <div class="timeline-dot dot-lsdo">LSDO</div>
+        </div>
+        <div class="col-right">
+          <div class="date-label">2025 – 2026</div>
+          <div class="exp-card">
+            <h3>UCSD Design Optimization Laboratory</h3>
+            <p>
+              Concurrent quadrotor design and GNC optimization via nonlinear MPC. A
+              segment-wise warm-start strategy made randomized racecourse configurations
+              that previously stalled or diverged solve reliably.
+            </p>
+            <a href="experiences/lsdo.html" class="read-more" data-project="experiences/lsdo.html">Read More</a>
+          </div>
         </div>
       </div>
+
     </div>
-
-    <div class="timeline-row">
-      <div class="col-left">
-        <div class="timeline-img-wrapper">
-           <img src="assets/images/scc.png" alt="Viasat Control Center" loading="lazy">
-        </div>
-      </div>
-      <div class="col-center">
-        <div class="timeline-dot dot-viasat">VS</div>
-      </div>
-      <div class="col-right">
-        <div class="date-label">2023 – 2025</div>
-        <div class="exp-card">
-          <h3>Viasat — Satellite Operations Intern</h3>
-          <p>
-            Developed operational tools and supported flight dynamics activities 
-            including station-keeping optimization and anomaly mitigation.
-          </p>
-          <a href="javascript:void(0)" class="read-more" data-project="experiences/viasat.html">Read More</a>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
+  </section>
 
   <section id="projects" class="section fade-in">
     <div class="projects-wrapper">
       <h2>Projects</h2>
       <div class="projects-grid">
-               <div class="project-item">
+        <div class="project-item">
           <a href="../assets/docs/MAE155_Team2_CoDR.pdf" target="_blank">
-            <img src="../assets/images/bwb.png" alt="BWB Aircraft">
+            <img src="assets/images/bwb.png" alt="BWB Aircraft">
             <div class="project-overlay">
               <div class="overlay-content">
                 <h3>Senior Design</h3>
@@ -169,8 +236,8 @@
           </a>
         </div>
         <div class="project-item">
-          <a href="javascript:void(0)" data-project="projects/yonder.html">
-            <img src="assets/images/project_yonder.png" alt="Yonder Dynamics Rover">
+          <a href="projects/yonder.html" data-project="projects/yonder.html">
+            <img src="assets/images/project_yonder.jpg" alt="Yonder Dynamics Rover">
             <div class="project-overlay">
               <div class="overlay-content">
                 <h3>Rover Elbow Joint</h3>
@@ -180,8 +247,8 @@
           </a>
         </div>
         <div class="project-item">
-          <a href="javascript:void(0)" data-project="projects/fsae.html">
-            <img src="assets/images/project_fsae.png" alt="Triton Racing Car">
+          <a href="projects/fsae.html" data-project="projects/fsae.html">
+            <img src="assets/images/project_fsae.jpg" alt="Triton Racing Car">
             <div class="project-overlay">
               <div class="overlay-content">
                 <h3>Carbon-Fiber Aero Package</h3>
@@ -191,7 +258,7 @@
           </a>
         </div>
         <div class="project-item">
-          <a href="javascript:void(0)" data-project="projects/cfd.html">
+          <a href="projects/cfd.html" data-project="projects/cfd.html">
             <img src="assets/images/project_cfd.png" alt="CFD Cold Flow">
             <div class="project-overlay">
               <div class="overlay-content">
@@ -202,7 +269,7 @@
           </a>
         </div>
         <div class="project-item">
-          <a href="javascript:void(0)" data-project="projects/wingspar.html">
+          <a href="projects/wingspar.html" data-project="projects/wingspar.html">
             <img src="assets/images/project_wingspar.png" alt="Wing Spar">
             <div class="project-overlay">
               <div class="overlay-content">
@@ -218,85 +285,79 @@
 
   <section id="skills" class="section fade-in">
     <h2>Skills</h2>
-    <div class="skills">
-      <span>Python (NumPy, SciPy)</span><span>MATLAB & Simulink</span><span>C++</span>
-      <span>CSDL (Optimization)</span><span>ANSYS Fluent</span><span>STK</span>
-      <span>GNC Algorithms</span><span>Systems Engineering (V&V)</span>
-      <span>Orbital Mechanics</span><span>Flight Software</span>
+
+    <div class="skill-group">
+      <h3 class="skill-group-label">GNC &amp; Astrodynamics</h3>
+      <div class="skills">
+        <span>Basilisk<em>Starfish</em></span>
+        <span>Attitude Control<em>Starfish &middot; Viasat</em></span>
+        <span>GNC Algorithms<em>Starfish &middot; LSDO</em></span>
+        <span>Orbital Mechanics<em>Viasat</em></span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3 class="skill-group-label">Software</h3>
+      <div class="skills">
+        <span>Flight Software<em>Starfish</em></span>
+        <span>Python (NumPy, SciPy)<em>Starfish &middot; Planet &middot; Viasat</em></span>
+        <span>C++<em>Starfish</em></span>
+        <span>MATLAB<em>UCSD</em></span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3 class="skill-group-label">Miscellaneous</h3>
+      <div class="skills">
+        <span>Optimization<em>LSDO &middot; Senior Design</em></span>
+        <span>V&amp;V and AI&amp;T<em>Planet</em></span>
+        <span>ANSYS Fluent<em>Certified</em></span>
+      </div>
     </div>
   </section>
 
   <section id="contact" class="section fade-in">
     <h2>Contact Me</h2>
     <div class="form-container" style="position: relative; overflow: hidden; padding-bottom: 20px;">
-        <form id="contact-form" action="https://formspree.io/f/xlgbopdd" method="POST" class="contact-form">
-          <div class="form-group"><input type="text" name="name" placeholder="Name" required><input type="email" name="email" placeholder="Email" required></div>
-          <textarea name="message" rows="5" placeholder="Message" required></textarea>
-          <button type="submit" class="btn" id="send-btn">Send Message</button>
-        </form>
+      <form id="contact-form" action="https://formspree.io/f/xlgbopdd" method="POST" class="contact-form">
+        <div class="form-group"><input type="text" name="name" placeholder="Name" required><input type="email"
+            name="email" placeholder="Email" required></div>
+        <textarea name="message" rows="5" placeholder="Message" required></textarea>
+        <button type="submit" class="btn" id="send-btn">Send Message</button>
+      </form>
     </div>
   </section>
 
   <footer>
     <div class="footer-links">
       <a href="https://linkedin.com/in/alex-burns1" target="_blank" class="footer-btn">LinkedIn</a>
-      <a href="mailto:a2burns@ucsd.edu" class="footer-btn" id="email-link">Email</a>
+      <a href="mailto:ajburns@stanford.edu" class="footer-btn" id="email-link">Email</a>
       <a href="assets/resume.pdf" target="_blank" class="footer-btn">Resume</a>
     </div>
-    
+
     <div class="system-status-bar">
-        <span class="status-item">LOC: <span class="highlight">SAN DIEGO, CA</span></span>
-        <span class="status-item">TIME UTC: <span id="utc-clock" class="highlight">00:00:00</span></span>
-        <span class="status-item">STATUS: <span class="status-indicator blinking"></span><span class="highlight">NOMINAL</span></span>
+      <span class="status-item">LOC: <span class="highlight">SAN DIEGO, CA</span></span>
+      <span class="status-item">TIME UTC: <span id="utc-clock" class="highlight">00:00:00</span></span>
+      <span class="status-item">STATUS: <span class="status-indicator blinking"></span><span
+          class="highlight">NOMINAL</span></span>
     </div>
 
     <p class="copyright">© 2026 Alexander Burns.</p>
   </footer>
 
-  <div id="project-modal" class="modal">
+  <div id="project-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-content">
-      <span class="close-modal">&times;</span>
-      
-      <h3 id="modal-title"></h3>
-      
-      <div id="modal-3d-container"></div>
+      <button type="button" class="close-modal" aria-label="Close">&times;</button>
 
-      <div id="modal-chart-container" style="display:none;">
-          <canvas id="radarChart"></canvas>
-      </div>
+      <h3 id="modal-title"></h3>
 
       <div id="modal-content-body">
-        <div id="modal-description"></div>
-        <iframe id="modal-iframe"></iframe>
-
-
-        
-        <div id="modal-code-container" style="display:none;">
-            <h4>Code Vault:</h4>
-            <pre class="code-block"><code id="modal-code-content"></code></pre>
-        </div>
-
-        <h4 id="skills-header">Skills & Technologies:</h4>
-        <div id="modal-skills-container" class="skills"></div>
-        
-        <div id="modal-actions" class="modal-actions"></div>
+        <iframe id="modal-iframe" title="Experience detail"></iframe>
       </div>
-
-      <div id="modal-video-container"></div>
     </div>
-  </div>
-
-  <div id="scroll-top" class="rocket-btn">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l-7 10h14l-7-10z"></path><path d="M12 12v10"></path><path d="M12 22s-3-2-3-5h6c0 3-3 5-3 5z"></path></svg>
-    <span class="ctrl-label left-side">Launch</span>
-  </div>
-
-  <div id="blueprint-toggle" class="blueprint-btn">
-    <svg class="icon-drafting" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="2"></circle><path d="M5 21L12 5l7 16"></path><path d="M8 15h8"></path></svg>
-    <svg class="icon-cosmos" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-    <span class="ctrl-label right-side" id="mode-label">Blueprint Mode</span>
   </div>
 
   <script src="js/script.js"></script>
 </body>
+
 </html>

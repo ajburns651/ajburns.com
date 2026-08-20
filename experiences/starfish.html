@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>AB | Starfish Space</title>
+  <link rel="stylesheet" href="../css/experiences.css">
+  <style>
+    body {
+      background-color: #ffffff;
+    }
+
+    /* --- Tighter vertical rhythm (page scoped) ---
+       The shared stylesheet stacks four separate gaps between sections: a row
+       margin, the section's padding-bottom, its margin-bottom, and the next
+       section's margin-top. Roughly halved here. align-items:flex-start also
+       stops a short text column floating down the middle of a taller figure. */
+    /* Centred in the band between the hero's bottom edge and its own rule,
+       rather than sitting flush against the banner. */
+    .disclaimer-text {
+      margin-top: 12px;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+
+    .experience-section {
+      margin-top: 0.6rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1.25rem;
+    }
+
+    .experience-title {
+      margin-bottom: 0.8rem;
+    }
+
+    .experience-section .project-row {
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+      gap: 34px;
+    }
+
+    /* No reset in experiences.css, and the shared rule only sets margin-bottom,
+       so every paragraph keeps the UA default margin-top:1em. .project-text is
+       a flex item, so it can't collapse out — it just pads the first paragraph. */
+    .project-text p {
+      margin-top: 0;
+      margin-bottom: 0.85rem;
+    }
+
+    .project-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .skills-section {
+      padding-top: 16px;
+      margin-bottom: 30px;
+    }
+
+    /* --- Interactive controller sandbox (page scoped) --- */
+    .sim-widget {
+      border: 1px solid #d5d5d5;
+      border-radius: 6px;
+      background: #fbfbfc;
+      padding: 18px;
+      margin: 10px 0 8px;
+    }
+
+    /* The widget's own bottom margin stacked on top of the section's
+       padding-bottom, doubling the run-out to the divider. */
+    .sandbox-section {
+      padding-bottom: 0.6rem;
+    }
+
+    /* Two figure rows make this section read denser than the others, so it gets
+       a little more room off both rules. Has to be margin-top, not padding-top:
+       padding would stop the h3's default top margin collapsing out and add
+       another ~18px on top of whatever is set here. */
+    .shadowing-section {
+      margin-top: 1.6rem;
+      padding-bottom: 1.9rem;
+    }
+
+    .sim-widget-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .sim-widget-head h4 {
+      margin: 0;
+      font-size: 0.95rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #111;
+    }
+
+    .sim-widget-head span {
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    .sim-body {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 820px) {
+      .sim-body {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .sim-field {
+      margin-bottom: 10px;
+    }
+
+    .sim-field label {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 3px;
+    }
+
+    .sim-field select {
+      width: 100%;
+      padding: 6px 8px;
+      font-family: "Courier New", monospace;
+      font-size: 0.82rem;
+      border: 1px solid #c9c9c9;
+      border-radius: 3px;
+      background: #fff;
+      color: #222;
+    }
+
+    .sim-field.preset select {
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: bold;
+    }
+
+    .sim-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 520px) {
+      .sim-metrics {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .sim-metric {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 8px 10px;
+    }
+
+    .sim-metric .m-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #777;
+    }
+
+    .sim-metric .m-value {
+      font-family: "Courier New", monospace;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #111;
+    }
+
+    .sim-chart {
+      margin-bottom: 5px;
+    }
+
+    .sim-chart-title {
+      font-size: 0.72rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #555;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 1px;
+    }
+
+    .sim-legend {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .sim-swatch {
+      width: 16px;
+      height: 0;
+      border-top: 2px solid #999;
+      display: inline-block;
+    }
+
+    .sim-chart canvas {
+      width: 100%;
+      height: 124px;
+      display: block;
+    }
+
+    .sim-warning {
+      display: none;
+      background: #fff1f2;
+      border: 1px solid #ff2d55;
+      color: #a4001c;
+      padding: 8px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-bottom: 10px;
+    }
+
+    .sim-warning.show {
+      display: block;
+    }
+
+    .sim-note {
+      font-size: 0.75rem;
+      color: #777;
+      font-style: italic;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="project-page-hero" style="background-image: url('../assets/images/experiences/starfish/hero.jpg');">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Starfish Space Internship</h1>
+      <p class="project-page-hero-subtitle">GNC Engineer</p>
+    </div>
+  </header>
+
+  <main class="project-detail-container">
+
+    <p class="disclaimer-text">
+      Non-Disclosure Agreement: only non-proprietary aspects of my work at Starfish Space are discussed here.
+    </p>
+
+    <!-- OVERVIEW -->
+    <section class="experience-section">
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            I spent my 2026 summer as a GNC intern at <span class="accent-text">Starfish Space</span> working on
+            <strong>rendezvous and proximity operations</strong> for <strong>Otter</strong>, a servicing vehicle that
+            uses relative navigation to autonomously dock with client spacecraft. My work covered three projects, each
+            integrated into Starfish's <strong>Basilisk</strong> simulation and CI pipeline: a modular attitude
+            control framework, a solar array shadowing model for power-aware proximity operations, and a SIL
+            <strong>C++</strong> thermal controller exercised across nominal and tumbling rendezvous 6-DOF simulations.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPOSABLE ATTITUDE CONTROLLER -->
+    <section class="experience-section sandbox-section">
+      <h3 class="experience-title">Generic Satellite Attitude Control</h3>
+
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            I designed a <strong>generic attitude controller class</strong> and a <strong>composable PID
+              controller</strong> in Python and C++ for Basilisk. The wrapper handles what every control law shares
+            - attitude error, reference rates in the body frame, torque saturation - and the flight
+            software selects its law by name from config. The composable PID assembles that law at construction from
+            lookup tables. Most importantly, the framework I
+            developed supports entirely custom, Lyapunov, and other PID formulations <strong>without rebuilding the
+              code</strong>, and each variant carries its own unit test. A simple version of the work is included in the
+            demo below.
+          </p>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE SANDBOX -->
+      <div class="sim-widget" id="sandbox">
+        <div class="sim-widget-head">
+          <h4>Create a Control Law</h4>
+          <span>attitude propagation, 120s sim, unmodeled disturbance torque</span>
+        </div>
+
+        <div class="sim-body">
+          <div class="sim-panel">
+            <div class="sim-field preset">
+              <label for="s-preset">Preset</label>
+              <select id="s-preset">
+                <option value="pd">Baseline MRP PD</option>
+                <option value="lyap">Lyapunov PID</option>
+                <option value="online" selected>Lyapunov PID + Online Gains</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+
+            <div class="sim-field">
+              <label for="s-error_repr">error_repr</label>
+              <select id="s-error_repr">
+                <option value="mrp">mrp</option>
+                <option value="prv">prv</option>
+              </select>
+            </div>
+
+            <div class="sim-field">
+              <label for="s-integral">integral</label>
+              <select id="s-integral">
+                <option value="disabled">disabled</option>
+                <option value="plain">plain</option>
+                <option value="lyapunov">lyapunov</option>
+              </select>
+            </div>
+
+            <div class="sim-field">
+              <label for="s-gyroscopic">gyroscopic</label>
+              <select id="s-gyroscopic">
+                <option value="disabled">disabled</option>
+                <option value="omega_body">omega_body</option>
+                <option value="omega_ref">omega_ref</option>
+              </select>
+            </div>
+
+            <div class="sim-field">
+              <label for="s-ff_reference">ff_reference</label>
+              <select id="s-ff_reference">
+                <option value="disabled">disabled</option>
+                <option value="alpha">alpha</option>
+                <option value="alpha_minus_cross">alpha_minus_cross</option>
+              </select>
+            </div>
+
+            <div class="sim-field">
+              <label for="s-torque_known">torque_known</label>
+              <select id="s-torque_known">
+                <option value="disabled">disabled</option>
+                <option value="constant_bias">constant_bias</option>
+              </select>
+            </div>
+
+            <div class="sim-field">
+              <label for="s-gains_online">gains_online</label>
+              <select id="s-gains_online">
+                <option value="disabled">disabled</option>
+                <option value="online">enabled</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="sim-plots">
+            <div class="sim-warning" id="s-warning"></div>
+
+            <div class="sim-metrics">
+              <div class="sim-metric">
+                <div class="m-label">Settle (&lt;0.5&deg;)</div>
+                <div class="m-value" id="m-settle">&mdash;</div>
+              </div>
+              <div class="sim-metric">
+                <div class="m-label">RMS Error</div>
+                <div class="m-value" id="m-final">&mdash;</div>
+              </div>
+              <div class="sim-metric">
+                <div class="m-label">Peak torque</div>
+                <div class="m-value" id="m-peak">&mdash;</div>
+              </div>
+              <div class="sim-metric">
+                <div class="m-label">Control effort</div>
+                <div class="m-value" id="m-effort">&mdash;</div>
+              </div>
+            </div>
+
+            <div class="sim-chart">
+              <div class="sim-chart-title">
+                <span>Attitude tracking error [deg, log]</span>
+                <span class="sim-legend"><span class="sim-swatch" style="border-color:#ff2d55"></span>selected</span>
+                <span class="sim-legend"><span class="sim-swatch"
+                    style="border-top-style:dashed;border-color:#9aa0a6"></span>baseline PD</span>
+              </div>
+              <canvas id="c-error"></canvas>
+            </div>
+
+            <div class="sim-chart">
+              <div class="sim-chart-title"><span>Commanded body torque, max [N&middot;m, log]</span></div>
+              <canvas id="c-torque"></canvas>
+            </div>
+
+            <div class="sim-chart">
+              <div class="sim-chart-title">
+                <span>Gain Updates [K / K&#8320;]</span>
+                <span class="sim-legend"><span class="sim-swatch" style="border-color:#1e3a8a"></span>Kp</span>
+                <span class="sim-legend"><span class="sim-swatch" style="border-color:#0a9396"></span>Kd</span>
+              </div>
+              <canvas id="c-gains"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLAR ARRAY SHADOWING -->
+    <section class="experience-section shadowing-section">
+      <h3 class="experience-title">Supporting Power-aware Trajectory Design</h3>
+
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            Otter docks with clients significantly larger than itself, so both the client and Otter's own structure
+            throw a moving shadow across the solar arrays. Client geometry is unique to every mission and the
+            docked stack's dynamics change constantly, so a shadowing model that was accurate, cheap, and valid for all
+            orientations was needed to assist with <strong>power-aware RPOD.</strong>
+          </p>
+          <p>
+            I built a <strong>ray tracing</strong> pipeline that resolves self and client shadowing directly from
+            spacecraft geometry, including solar panel rotation. I reduced the dimensionality of the problem by
+            collapsing the three-dimensional Sun vector to two angles and removing the dependence on Sun distance,
+            reducing the problem to a 2-D <strong>look-up table</strong> of array visibility fraction that the
+            <strong>BSK</strong> simulation interpolates in microseconds.
+          </p>
+        </div>
+        <div class="project-image">
+          <img src="../assets/images/experiences/starfish/raytrace.png"
+            alt="Ray tracing schematic: sunlight cast past the client onto Otter's arrays, with the resulting per-panel visibility fraction">
+          <p class="figure-caption">Otter Client shadowing results for different orientations.</p>
+        </div>
+      </div>
+
+      <div class="project-row">
+        <div class="project-image">
+          <img src="../assets/images/experiences/starfish/lut.png"
+            alt="Solar array visibility look-up table over azimuth and elevation, before and after parallelization">
+          <p class="figure-caption">The same azimuth &times; elevation visibility table before and after
+            parallelization.</p>
+        </div>
+        <div class="project-text">
+          <p>
+            I integrated the model into Basilisk end to end: a custom <strong>pyModel</strong> that maps Otter's
+            orientation onto the table's two angles and interpolates it, an interface layer wiring config, Python,
+            and the <strong>C++ solar panel model</strong> together through the messaging system, and plotting
+            support that resolves the resulting shadow factor across anything from a single orbit to a full year.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- THERMAL CONTROLLER IN LOOP -->
+    <section class="experience-section">
+      <h3 class="experience-title">SIL Thermal Controller</h3>
+
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            Validating a thermal controller left two options: a mock controller, cheap and broad but blind to what
+            the real firmware actually does, and TVAC, perfectly faithful but real-time and unable to sweep every
+            orbit, attitude, and fault case.
+          </p>
+          <p>
+            I closed this gap by building a <strong>SIL framework</strong> connecting Otter's real
+            temperature control firmware to <strong>Basilisk's 6-DOF Monte Carlo state propagation</strong>. The
+            firmware communicates with the simulation over a <strong>lockstep socket interface</strong>, and the sim
+            blocks on the client everystep, reproducing the flight-like single-step delay between reading a temperature
+            and heater response.
+          </p>
+        </div>
+        <div class="project-image">
+          <img src="../assets/images/experiences/starfish/firmware-loop.png"
+            alt="Python server and C++ firmware client exchanging temperatures and heater states, and the resulting component temperature sawtooth against setpoint buffers">
+          <p class="figure-caption">Socket interface and example temperature response profile.</p>
+        </div>
+      </div>
+
+
+      <div class="project-row">
+        <div class="project-image">
+          <img src="../assets/images/experiences/starfish/tc-swap.png"
+            alt="Block diagram: one thermal plant feeding either the Python mock controller or the C++ firmware controller, selected by a YAML switch">
+          <p class="figure-caption">One plant, two controllers - a simple config switch.</p>
+        </div>
+        <div class="project-text">
+          <p>
+            The simulation scales to n components. Also, the mock and firmware controllers hang off the same
+            plant behind a config switch so that they compare on identical dynamics. I validated thermal
+            control capability across <strong>nominal and tumbling rendezvous</strong> scenarios and added the
+            checks to the <strong>CI unit test pipeline</strong>.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="skills-section">
+      <div class="skills-header">TOP SKILLS &amp; TOOLS UTILIZED</div>
+      <div class="skills-grid">
+        <div class="skill-tag">GNC Flight Software</div>
+        <div class="skill-tag">C++ Basilisk Simulation</div>
+        <div class="skill-tag">Attitude Control Law Design</div>
+        <div class="skill-tag">SIL Testing</div>
+        <div class="skill-tag">6-DOF Monte Carlo Analysis</div>
+        <div class="skill-tag">CI Unit Test Development</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer-bar">
+    <div class="footer-container">
+      <div class="footer-left">
+        <a href="https://www.linkedin.com/in/alex-burns1/" target="_blank" class="linkedin-link">
+          <img src="../assets/images/LinkedIn_icon.png" alt="LinkedIn" class="linkedin-icon">
+          <span class="linkedin-text">LinkedIn</span>
+        </a>
+      </div>
+
+      <div class="footer-copyright">
+        &copy; 2026 Alexander Burns
+      </div>
+
+      <div class="footer-right">
+        <a href="mailto:ajburns@stanford.edu" class="email-link">ajburns@stanford.edu</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // ==========================================================
+      // Vector helpers
+      // ==========================================================
+      var add = function (a, b) { return [a[0] + b[0], a[1] + b[1], a[2] + b[2]]; };
+      var sub = function (a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; };
+      var scl = function (a, k) { return [a[0] * k, a[1] * k, a[2] * k]; };
+      var mul = function (a, b) { return [a[0] * b[0], a[1] * b[1], a[2] * b[2]]; };
+      var dot = function (a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; };
+      var cross = function (a, b) {
+        return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+      };
+      var nrm = function (a) { return Math.sqrt(dot(a, a)); };
+      var matvec = function (M, a) { return [dot(M[0], a), dot(M[1], a), dot(M[2], a)]; };
+
+      // ==========================================================
+      // Attitude state helpers
+      // ==========================================================
+      function _fn1(q) {
+        var s2 = dot(q, q);
+        return s2 > 1 ? scl(q, -1 / s2) : q;
+      }
+
+      function _fn2(q1, q2) {
+        var s1 = dot(q1, q1), s2 = dot(q2, q2);
+        var den = 1 + s1 * s2 + 2 * dot(q1, q2);
+        if (den < 1e-5) { q2 = scl(q2, -1 / s2); s2 = dot(q2, q2); den = 1 + s1 * s2 + 2 * dot(q1, q2); }
+        var num = add(sub(scl(q1, 1 - s2), scl(q2, 1 - s1)), scl(cross(q1, q2), 2));
+        return _fn1(scl(num, 1 / den));
+      }
+
+      function _fn3(q) {
+        var q1 = q[0], q2 = q[1], q3 = q[2];
+        var d1 = dot(q, q), S = 1 - d1, d = (1 + d1) * (1 + d1);
+        return [
+          [(4 * (2 * q1 * q1 - d1) + S * S) / d, (8 * q1 * q2 + 4 * q3 * S) / d, (8 * q1 * q3 - 4 * q2 * S) / d],
+          [(8 * q2 * q1 - 4 * q3 * S) / d, (4 * (2 * q2 * q2 - d1) + S * S) / d, (8 * q2 * q3 + 4 * q1 * S) / d],
+          [(8 * q3 * q1 + 4 * q2 * S) / d, (8 * q3 * q2 - 4 * q1 * S) / d, (4 * (2 * q3 * q3 - d1) + S * S) / d]
+        ];
+      }
+
+      function _fn4(q) {
+        var s2 = dot(q, q), a = q[0], b = q[1], c = q[2];
+        return [
+          [1 - s2 + 2 * a * a, 2 * (a * b - c), 2 * (a * c + b)],
+          [2 * (b * a + c), 1 - s2 + 2 * b * b, 2 * (b * c - a)],
+          [2 * (c * a - b), 2 * (c * b + a), 1 - s2 + 2 * c * c]
+        ];
+      }
+
+      function _fn5(q) {
+        var tp = nrm(q);
+        if (tp <= 0) return [0, 0, 0];
+        return scl(q, (4 * Math.atan(tp)) / tp);
+      }
+
+      var _fn6 = function (s, w) { return scl(matvec(_fn4(s), w), 0.25); };
+      var _fn7 = function (s) { return (4 * Math.atan(nrm(s)) * 180) / Math.PI; };
+
+      // ==========================================================
+      // Structure tables 
+      // ==========================================================
+      var ERROR_REPR = {
+        mrp: function (s) { return s; },
+        prv: _fn5
+      };
+
+      var GYROSCOPIC = {
+        disabled: function () { return [0, 0, 0]; },
+        omega_body: function (I, wB) { return cross(wB, mul(I, wB)); },
+        omega_ref: function (I, wB, wR) { return cross(wR, mul(I, wB)); }
+      };
+
+      var FF_REFERENCE = {
+        disabled: function () { return [0, 0, 0]; },
+        alpha: function (I, aR) { return mul(I, aR); },
+        alpha_minus_cross: function (I, aR, wB, wR) { return mul(I, sub(aR, cross(wB, wR))); }
+      };
+
+      function makeGains(ctrl, mode) {
+        if (mode !== 'online') {
+          return {
+            reset: function () { },
+            update: function () { return [ctrl.Kp0, ctrl.Kd0, ctrl.Ki0]; }
+          };
+        }
+        return {
+          Kp: ctrl.Kp0, Kd: ctrl.Kd0, Ki: ctrl.Ki0, errInt: [0, 0, 0],
+          reset: function () {
+            this.Kp = ctrl.Kp0; this.Kd = ctrl.Kd0; this.Ki = ctrl.Ki0; this.errInt = [0, 0, 0];
+          },
+          update: function (err, derr, dt) {
+            var s = add(derr, scl(err, 2));               // composite error metric
+            this.errInt = add(this.errInt, scl(err, dt));
+            this.Kp = add(this.Kp, scl(mul(s, err), 5 * dt));
+            this.Kd = add(this.Kd, scl(mul(s, derr), 2 * dt));
+            this.Ki = add(this.Ki, scl(mul(s, this.errInt), 1 * dt));
+            return [this.Kp, this.Kd, this.Ki];
+          }
+        };
+      }
+
+      function makeIntegral(ctrl, mode) {
+        if (mode === 'plain') {
+          return {
+            acc: [0, 0, 0],
+            reset: function () { this.acc = [0, 0, 0]; },
+            update: function (err, derr, dt) {
+              this.acc = add(this.acc, scl(mul(ctrl.Ki, err), dt));
+              return this.acc;
+            }
+          };
+        }
+        if (mode === 'lyapunov') {
+          return {
+            acc: [0, 0, 0], derr0: null,
+            reset: function () { this.acc = [0, 0, 0]; this.derr0 = null; },
+            update: function (err, derr, dt, I) {
+              if (this.derr0 === null) this.derr0 = derr.slice();
+              this.acc = add(this.acc, scl(err, dt));
+              var rateOffset = mul(mul(ctrl.Kd, ctrl.Ki), mul(I, sub(derr, this.derr0)));
+              return add(mul(mul(mul(ctrl.Kp, ctrl.Kd), ctrl.Ki), this.acc), rateOffset);
+            }
+          };
+        }
+        return { reset: function () { }, update: function () { return [0, 0, 0]; } };
+      }
+
+      function makeController(opt) {
+        var ctrl = {
+          Kp0: opt.Kp, Kd0: opt.Kd, Ki0: opt.Ki,
+          Kp: opt.Kp, Kd: opt.Kd, Ki: opt.Ki
+        };
+        var toError = ERROR_REPR[opt.error_repr];
+        var gyro = GYROSCOPIC[opt.gyroscopic];
+        var ff = FF_REFERENCE[opt.ff_reference];
+        var known = opt.torque_known === 'constant_bias'
+          ? function () { return opt.bias; }
+          : function () { return [0, 0, 0]; };
+
+        ctrl.gains = makeGains(ctrl, opt.gains_online);
+        ctrl.integral = makeIntegral(ctrl, opt.integral);
+        ctrl.gains.reset();
+        ctrl.integral.reset();
+
+        ctrl.compute = function (p) {
+          var err = toError(p.sigma_BR);
+          var feedback = add(
+            add(mul(ctrl.Kp, err), mul(ctrl.Kd, p.omega_BR_B)),
+            ctrl.integral.update(err, p.omega_BR_B, p.dt, p.inertia_B)
+          );
+          var feedforward = mul(opt.ffGain, add(
+            gyro(p.inertia_B, p.omega_BN_B, p.omega_RN_B),
+            ff(p.inertia_B, p.alpha_RN_B, p.omega_BN_B, p.omega_RN_B)
+          ));
+          var torque = add(add(scl(mul(opt.loopGain, feedback), -1), feedforward), known());
+
+          var g = ctrl.gains.update(err, p.omega_BR_B, p.dt);
+          ctrl.Kp = g[0]; ctrl.Kd = g[1]; ctrl.Ki = g[2];
+          return torque;
+        };
+        return ctrl;
+      }
+
+      // ==========================================================
+      // Scenario: slewing reference the body has to track
+      // ==========================================================
+      var W0 = [0.001, -0.002, 0.0015], WA = 0.07, WF = 0.10;
+      var wRef = function (t) {
+        return [W0[0] + WA * Math.sin(WF * t), W0[1], W0[2] + WA * Math.cos(0.8 * WF * t)];
+      };
+      var aRef = function (t) {
+        return [WA * WF * Math.cos(WF * t), 0, -WA * 0.8 * WF * Math.sin(0.8 * WF * t)];
+      };
+
+      // Gains are placed for a critically-damped-ish MRP loop: wn = 0.30 rad/s, zeta = 1.3,
+      // i.e. Kp = 4*I*wn^2 and Kd = 2*zeta*I*wn.
+      var SCENARIO = {
+        inertia: [10, 15, 12],
+        dt: 0.1,
+        tf: 120,
+        sigma0: [0.06, -0.12, 0.09],
+        omega0: [0.01, -0.01, 0.005],
+        Kp: [3.6, 5.4, 4.32],
+        Kd: [7.8, 11.7, 9.36],
+        Ki: [5e-3, 5e-3, 5e-3],
+        loopGain: [1, 1, 1],
+        ffGain: [1, 1, 1],
+        disturbance: [0.012, -0.024, 0.008],
+        torqueLimit: 0
+      };
+
+      var DIVERGED = 1e4;
+
+      function simulate(opt) {
+        var I = opt.inertia, dt = opt.dt, N = Math.round(opt.tf / dt);
+        var ctrl = makeController(opt);
+        var sBN = opt.sigma0.slice(), wBN = opt.omega0.slice(), sRN = [0, 0, 0];
+        var out = { t: [], errDeg: [], torque: [], kp: [], kd: [], peak: 0, effort: 0, diverged: false };
+        var d = opt.disturbance;
+        var k, i;
+
+        for (k = 0; k <= N; k++) {
+          var t = k * dt;
+          var wR_R = wRef(t), aR_R = aRef(t);
+          var sBR = _fn2(sBN, sRN);
+          var dcmBR = _fn3(sBR);
+          var wR_B = matvec(dcmBR, wR_R);
+          var wBR_B = sub(wBN, wR_B);
+          var aR_B = matvec(dcmBR, aR_R);
+
+          var u = ctrl.compute({
+            sigma_BR: sBR, omega_BR_B: wBR_B, omega_BN_B: wBN, omega_RN_B: wR_B,
+            alpha_RN_B: aR_B, inertia_B: I, dt: dt
+          });
+          if (opt.torqueLimit) {
+            u = [0, 1, 2].map(function (j) {
+              return Math.max(-opt.torqueLimit, Math.min(opt.torqueLimit, u[j]));
+            });
+          }
+
+          var uMax = Math.max(Math.abs(u[0]), Math.abs(u[1]), Math.abs(u[2]));
+          out.t.push(t);
+          out.errDeg.push(_fn7(sBR));
+          out.torque.push(uMax);
+          out.kp.push(ctrl.Kp[0] / opt.Kp[0]);
+          out.kd.push(ctrl.Kd[0] / opt.Kd[0]);
+          out.peak = Math.max(out.peak, uMax);
+          out.effort += uMax * dt;
+
+          if (!isFinite(uMax) || uMax > DIVERGED) { out.diverged = true; break; }
+
+          // Plant: [I] wdot = -w x [I]w + u + d, RK4 with the torque held across the step
+          var uTot = add(u, d);
+          var wdot = function (w) {
+            return mul(add(scl(cross(w, mul(I, w)), -1), uTot), [1 / I[0], 1 / I[1], 1 / I[2]]);
+          };
+          var k1w = wdot(wBN), k1s = _fn6(sBN, wBN);
+          var w2 = add(wBN, scl(k1w, dt / 2)), s2 = add(sBN, scl(k1s, dt / 2));
+          var k2w = wdot(w2), k2s = _fn6(s2, w2);
+          var w3 = add(wBN, scl(k2w, dt / 2)), s3 = add(sBN, scl(k2s, dt / 2));
+          var k3w = wdot(w3), k3s = _fn6(s3, w3);
+          var w4 = add(wBN, scl(k3w, dt)), s4 = add(sBN, scl(k3s, dt));
+          var k4w = wdot(w4), k4s = _fn6(s4, w4);
+          wBN = add(wBN, scl(add(add(k1w, scl(add(k2w, k3w), 2)), k4w), dt / 6));
+          sBN = _fn1(add(sBN, scl(add(add(k1s, scl(add(k2s, k3s), 2)), k4s), dt / 6)));
+
+          var r1 = _fn6(sRN, wR_R), r2 = _fn6(add(sRN, scl(r1, dt / 2)), wR_R);
+          var r3 = _fn6(add(sRN, scl(r2, dt / 2)), wR_R), r4 = _fn6(add(sRN, scl(r3, dt)), wR_R);
+          sRN = _fn1(add(sRN, scl(add(add(r1, scl(add(r2, r3), 2)), r4), dt / 6)));
+
+          if (!isFinite(nrm(sBN)) || !isFinite(nrm(wBN))) { out.diverged = true; break; }
+        }
+
+        // RMS over the last 20 s: a snapshot of the final sample is misleading for the
+        // integral formulations, which can still be slowly oscillating at t = tf.
+        var tail = Math.min(Math.round(20 / dt), out.errDeg.length);
+        var acc = 0;
+        for (i = out.errDeg.length - tail; i < out.errDeg.length; i++) acc += out.errDeg[i] * out.errDeg[i];
+        out.rmsErr = Math.sqrt(acc / tail);
+        out.settle = null;
+        if (!out.diverged) {
+          for (i = out.errDeg.length - 1; i >= 0; i--) {
+            if (out.errDeg[i] > 0.5) { out.settle = out.t[Math.min(i + 1, out.t.length - 1)]; break; }
+          }
+          if (out.settle !== null && out.settle >= out.t[out.t.length - 1]) out.settle = null;
+        }
+        return out;
+      }
+
+      // ==========================================================
+      // Minimal canvas plotting
+      // ==========================================================
+      function drawChart(canvas, cfg) {
+        var dpr = window.devicePixelRatio || 1;
+        var w = canvas.clientWidth || 600;
+        var h = canvas.clientHeight || 170;
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        var ctx = canvas.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, w, h);
+
+        var L = 46, R = 8, T = 8, B = 20;
+        var pw = w - L - R, ph = h - T - B;
+
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(L, T, pw, ph);
+
+        var yPix;
+        if (cfg.log) {
+          var l0 = Math.log10(cfg.ymin), l1 = Math.log10(cfg.ymax);
+          yPix = function (v) {
+            var c = Math.min(Math.max(v, cfg.ymin), cfg.ymax);
+            return T + ph - ((Math.log10(c) - l0) / (l1 - l0)) * ph;
+          };
+        } else {
+          yPix = function (v) {
+            var c = Math.min(Math.max(v, cfg.ymin), cfg.ymax);
+            return T + ph - ((c - cfg.ymin) / (cfg.ymax - cfg.ymin)) * ph;
+          };
+        }
+        var xPix = function (t) { return L + (t / cfg.xmax) * pw; };
+
+        // grid + y labels
+        ctx.strokeStyle = '#e8e8e8';
+        ctx.fillStyle = '#8a8a8a';
+        ctx.font = '10px "Courier New", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.lineWidth = 1;
+        cfg.yticks.forEach(function (v) {
+          var y = Math.round(yPix(v)) + 0.5;
+          ctx.beginPath();
+          ctx.moveTo(L, y);
+          ctx.lineTo(L + pw, y);
+          ctx.stroke();
+          ctx.fillText(cfg.ytickLabel(v), L - 6, y);
+        });
+
+        // x ticks
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        var step = cfg.xmax / 4;
+        for (var i = 0; i <= 4; i++) {
+          var xv = i * step;
+          var x = Math.round(xPix(xv)) + 0.5;
+          ctx.strokeStyle = '#f0f0f0';
+          ctx.beginPath();
+          ctx.moveTo(x, T);
+          ctx.lineTo(x, T + ph);
+          ctx.stroke();
+          ctx.fillStyle = '#8a8a8a';
+          ctx.fillText(xv.toFixed(0) + 's', x, T + ph + 4);
+        }
+
+        // series
+        cfg.series.forEach(function (s) {
+          if (!s.y || !s.y.length) return;
+          ctx.beginPath();
+          ctx.strokeStyle = s.color;
+          ctx.lineWidth = s.width || 1.6;
+          ctx.setLineDash(s.dash || []);
+          for (var j = 0; j < s.y.length; j++) {
+            var px = xPix(cfg.t[j]);
+            var py = yPix(s.y[j]);
+            if (j === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+          ctx.setLineDash([]);
+        });
+
+        // frame
+        ctx.strokeStyle = '#cfcfcf';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(L + 0.5, T + 0.5, pw, ph);
+      }
+
+      // ==========================================================
+      // UI wiring
+      // ==========================================================
+      var KNOBS = ['error_repr', 'integral', 'gyroscopic', 'ff_reference', 'torque_known', 'gains_online'];
+
+      var PRESETS = {
+        pd: {
+          error_repr: 'mrp', integral: 'disabled', gyroscopic: 'disabled',
+          ff_reference: 'disabled', torque_known: 'disabled', gains_online: 'disabled'
+        },
+        lyap: {
+          error_repr: 'mrp', integral: 'lyapunov', gyroscopic: 'omega_ref',
+          ff_reference: 'alpha_minus_cross', torque_known: 'disabled', gains_online: 'disabled'
+        },
+        online: {
+          error_repr: 'mrp', integral: 'lyapunov', gyroscopic: 'omega_ref',
+          ff_reference: 'alpha_minus_cross', torque_known: 'disabled', gains_online: 'online'
+        }
+      };
+
+      var el = function (id) { return document.getElementById(id); };
+      var presetSel = el('s-preset');
+
+      function readConfig() {
+        var cfg = {};
+        KNOBS.forEach(function (k) { cfg[k] = el('s-' + k).value; });
+        return cfg;
+      }
+
+      function applyPreset(name) {
+        var p = PRESETS[name];
+        if (!p) return;
+        KNOBS.forEach(function (k) { el('s-' + k).value = p[k]; });
+      }
+
+      function matchPreset(cfg) {
+        var found = 'custom';
+        Object.keys(PRESETS).forEach(function (name) {
+          var p = PRESETS[name];
+          var same = KNOBS.every(function (k) { return p[k] === cfg[k]; });
+          if (same) found = name;
+        });
+        return found;
+      }
+
+      function optsFor(cfg) {
+        var opt = {};
+        Object.keys(SCENARIO).forEach(function (k) { opt[k] = SCENARIO[k]; });
+        KNOBS.forEach(function (k) { opt[k] = cfg[k]; });
+        // The "known torque" is only known because the disturbance is there to know.
+        opt.bias = opt.disturbance.map(function (x) { return -x; });
+        return opt;
+      }
+
+      function decadeMax(v) {
+        if (!isFinite(v) || v <= 0) return 1;
+        return Math.pow(10, Math.ceil(Math.log10(v)));
+      }
+
+      function render() {
+        var cfg = readConfig();
+        presetSel.value = matchPreset(cfg);
+
+        var run = simulate(optsFor(cfg));
+        var base = simulate(optsFor(PRESETS.pd));
+
+        // metrics
+        el('m-settle').textContent = run.diverged ? 'unstable'
+          : (run.settle === null ? '> 120 s' : run.settle.toFixed(1) + ' s');
+        el('m-final').textContent = run.diverged ? '—' : run.rmsErr.toFixed(3) + '°';
+        el('m-peak').textContent = run.diverged ? '—' : run.peak.toFixed(2) + ' N·m';
+        el('m-effort').textContent = run.diverged ? '—' : run.effort.toFixed(1) + ' N·m·s';
+
+        var warn = el('s-warning');
+        if (run.diverged) {
+          warn.textContent = '⚠ This composition went unstable for this maneuver — the commanded '
+            + 'torque ran away at t = ' + run.t[run.t.length - 1].toFixed(1) + ' s. '
+            + 'Exactly the kind of thing the config-driven unit tests exist to catch.';
+          warn.className = 'sim-warning show';
+        } else {
+          warn.className = 'sim-warning';
+        }
+
+        var xmax = SCENARIO.tf;
+
+        // A diverged run stops early, so both series share the longer time axis with
+        // the shorter one clipped rather than stretched.
+        var tAxis = base.t.length >= run.t.length ? base.t : run.t;
+        var decLabel = function (v) { return v >= 1 ? String(v) : v.toFixed(String(v).length - 2); };
+
+        drawChart(el('c-error'), {
+          t: tAxis, xmax: xmax, log: true, ymin: 1e-3, ymax: 200,
+          yticks: [1e-3, 1e-2, 1e-1, 1, 10, 100],
+          ytickLabel: decLabel,
+          series: [
+            { y: base.errDeg, color: '#9aa0a6', dash: [4, 3], width: 1.3 },
+            { y: run.errDeg, color: '#ff2d55' }
+          ]
+        });
+
+        var tmax = decadeMax(Math.max(run.peak, base.peak, 1));
+        var tticks = [];
+        for (var p = -3; Math.pow(10, p) <= tmax + 1e-9; p++) tticks.push(Math.pow(10, p));
+        drawChart(el('c-torque'), {
+          t: tAxis, xmax: xmax, log: true, ymin: 1e-3, ymax: tmax,
+          yticks: tticks,
+          ytickLabel: decLabel,
+          series: [
+            { y: base.torque, color: '#9aa0a6', dash: [4, 3], width: 1.3 },
+            { y: run.torque, color: '#ff2d55' }
+          ]
+        });
+
+        // Auto-ranged: offline gains sit flat at 1.0, and online adaptation is often only a
+        // few percent, so a fixed 0..N axis would render both as the same flat line.
+        var glo = 1, ghi = 1;
+        run.kp.concat(run.kd).forEach(function (v) {
+          if (!isFinite(v)) return;
+          glo = Math.min(glo, v);
+          ghi = Math.max(ghi, Math.min(v, 50));
+        });
+        var pad = Math.max((ghi - glo) * 0.15, 0.02);
+        glo -= pad; ghi += pad;
+        drawChart(el('c-gains'), {
+          t: run.t, xmax: xmax, log: false, ymin: glo, ymax: ghi,
+          yticks: [glo, (glo + ghi) / 2, ghi],
+          ytickLabel: function (v) { return v.toFixed(2); },
+          series: [
+            { y: run.kp, color: '#1e3a8a' },
+            { y: run.kd, color: '#0a9396' }
+          ]
+        });
+      }
+
+      KNOBS.forEach(function (k) { el('s-' + k).addEventListener('change', render); });
+      presetSel.addEventListener('change', function () {
+        if (presetSel.value !== 'custom') applyPreset(presetSel.value);
+        render();
+      });
+
+      var resizeTimer = null;
+      window.addEventListener('resize', function () {
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(render, 120);
+      });
+
+      applyPreset('online');
+      render();
+
+      // A #sandbox deep link parks the widget's top edge at the top of the
+      // viewport, which hides the section it belongs to. Centre it instead,
+      // once images have loaded and the layout has stopped shifting.
+      if (window.location.hash === '#sandbox') {
+        window.addEventListener('load', function () {
+          var node = document.getElementById('sandbox');
+          if (node) node.scrollIntoView({ block: 'center' });
+        });
+      }
+    }());
+  </script>
+
+</body>
+
+</html>

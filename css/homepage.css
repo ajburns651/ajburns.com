@@ -14,21 +14,6 @@
   --depth-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); 
 }
 
-/* BLUEPRINT MODE OVERRIDES */
-body.blueprint-mode {
-  --bg: #ffffff;
-  --light: #1e3a8a;
-  --muted: #475569;
-  --accent: #0369a1; 
-  --card-bg: #ffffff; 
-  --border-color: #0369a1; 
-  --glass-border: 1px solid #0369a1;
-  --font-header: 'Courier Prime', monospace;
-  --font-body: 'Courier Prime', monospace;
-  --depth-shadow: 4px 4px 0px rgba(3, 105, 161, 0.1); 
-  background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
-}
-
 * { margin:0; padding:0; box-sizing:border-box; }
 
 html { 
@@ -56,7 +41,6 @@ body.modal-open {
 h1, h2, h3, .logo { font-family: var(--font-header); letter-spacing: -0.02em; }
 h1 { font-weight: 300; line-height: 1.1; }
 p { font-size: 1.05rem; line-height: 1.6; color: var(--muted); }
-body.blueprint-mode p { color: #334155; }
 
 /* =========================================
    2. CANVAS & BACKGROUND
@@ -82,26 +66,11 @@ body.blueprint-mode p { color: #334155; }
   filter: blur(8px); /* Adjust pixel amount for more/less blur */
 }
 
-.blueprint-grid { 
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100dvh; 
-    z-index: -1; 
-    pointer-events: none; opacity: 0; transition: opacity 0.5s; 
-    background-image: linear-gradient(rgba(3, 105, 161, 0.1) 1px, transparent 1px), 
-                      linear-gradient(90deg, rgba(3, 105, 161, 0.1) 1px, transparent 1px); 
-    background-size: 40px 40px; 
-}
-body.blueprint-mode .blueprint-grid { opacity: 1; }
-
 .hero-backdrop { 
     position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
     background: radial-gradient(closest-side, rgba(11, 14, 20, 0.6) 0%, rgba(11, 14, 20, 0) 100%); 
     pointer-events: none; z-index: 1; 
 }
-body.blueprint-mode .hero-backdrop { display: none; }
 
 /* =========================================
    3. NAVIGATION
@@ -111,7 +80,6 @@ nav {
     background: rgba(11, 14, 20, 0.95); z-index:100; 
     border-bottom: var(--glass-border); transition: background 0.5s; 
 }
-body.blueprint-mode nav { background: rgba(255, 255, 255, 0.95); }
 
 .nav-container { 
     max-width:1200px; margin:0 auto; padding:1.25rem 2rem 1rem 2rem; 
@@ -173,26 +141,10 @@ nav a:hover, nav a.active { color:var(--accent); }
 .hero h1 { font-size:clamp(3.5rem, 7vw, 6.5rem); margin-bottom:0.8rem; color: var(--light); font-weight: 400; text-shadow: 0 4px 30px rgba(0,0,0,0.5); }
 .subtitle { color:var(--accent); font-weight:500; font-size:1.4rem; letter-spacing: 1px; margin-bottom: 2rem; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
 
-/* BLUEPRINT MODE HERO STYLES */
-body.blueprint-mode .hero h1 { color: #1e3a8a; text-shadow: none; }
-body.blueprint-mode .subtitle { text-shadow: none; }
-body.blueprint-mode .hero-content {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    padding: 3rem;
-    border: 2px solid #1e3a8a;
-    border-radius: 8px;
-    box-shadow: 8px 8px 0px rgba(30, 58, 138, 0.1);
-}
-body.blueprint-mode .hero-btn { background: #fff; border-color: #1e3a8a; color: #1e3a8a; }
-body.blueprint-mode .hero-btn:hover { background: #1e3a8a; color: #fff; }
-
 .section { padding: 5rem 1rem; max-width: 1200px; margin: auto; scroll-margin-top: 60px; }
 body { counter-reset: section; }
 section h2::before { counter-increment: section; content: "0" counter(section) ". "; color: var(--accent); opacity: 0.6; font-family: var(--font-header); font-weight: 400; font-size: 0.7em; margin-right: 10px; letter-spacing: 2px; }
 .section h2 { font-size:2.2rem; margin-bottom:2.5rem; display:inline-block; border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; color: var(--light); font-weight: 300; }
-body.blueprint-mode .section h2 { color: #1e3a8a; }
 
 /* =========================================
    5. CARDS & TIMELINE
@@ -210,7 +162,6 @@ body.blueprint-mode .section h2 { color: #1e3a8a; }
 .timeline-item .content { padding:20px; border-radius:4px; transition: transform 0.2s ease, border-color 0.2s; cursor: pointer; position: relative; overflow: hidden; }
 .timeline-item .content:hover { transform: translateY(-3px); border-color: var(--accent); background: #111827; }
 .timeline-item::after { content: ''; position: absolute; width: 14px; height: 14px; background-color: var(--bg); border: 2px solid var(--accent); top: 25px; z-index: 2; border-radius: 50%; box-shadow: 0 0 10px var(--accent); }
-body.blueprint-mode .timeline-item::after { border-radius: 0; transform: rotate(45deg); box-shadow: none; width: 12px; height: 12px; }
 .left::after { right: -7px; } .right::after { left: -7px; }
 .content h3 { color: var(--accent); margin-bottom: 0.5rem; font-family: var(--font-header); }
 .content small { color: var(--muted); font-size: 0.8rem; font-style: italic; }
@@ -231,7 +182,6 @@ body.blueprint-mode .timeline-item::after { border-radius: 0; transform: rotate(
 @media(min-width:768px) { .top-row { flex:0 1 calc(50% - 2rem); } .bottom-row { flex:0 1 calc(33.3% - 2rem); } }
 .experience-grid .project-card { flex: 0 1 calc(50% - 2rem); }
 .project-card img { width:100%; height:220px; object-fit:cover; transition: filter 0.3s; }
-body.blueprint-mode .project-card img { filter: none; }
 .project-summary { padding:1.5rem; text-align:left; flex-grow:1; display:flex; flex-direction:column; }
 .project-summary h3 { color: var(--accent); margin-bottom: 0.5rem; font-family: var(--font-header); }
 
@@ -253,30 +203,6 @@ body.blueprint-mode .project-card img { filter: none; }
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.3s ease;
-}
-
-/* =========================================
-   BLUEPRINT MODE: PROJECT CARD OVERRIDES
-   ========================================= */
-
-/* 1. Make the overlay look like white paper/vellum */
-body.blueprint-mode .project-item .project-overlay {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid var(--accent); /* Adds a nice drafting border */
-}
-
-/* 2. Ensure the text is the dark blueprint blue */
-body.blueprint-mode .overlay-content h3 {
-  color: var(--accent); /* #0369a1 */
-  text-shadow: none;    /* Remove any shadows from dark mode */
-  font-weight: 700;
-  text-decoration: underline; /* Optional: adds to the drafting look */
-}
-
-/* 3. Make description text dark and legible */
-body.blueprint-mode .overlay-content p {
-  color: #334155; /* Dark Slate */
-  font-weight: 500;
 }
 
 .project-item:hover {
@@ -341,8 +267,38 @@ body.blueprint-mode .overlay-content p {
    7. SKILLS
    ========================================= */
 .skills { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; max-width: 700px; margin: 0 auto; }
+.skill-group { margin-bottom: 2rem; }
+.skill-group:last-child { margin-bottom: 0; }
+.skill-group-label {
+  font-family: var(--font-header);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+  margin: 0 0 0.9rem;
+}
 .skills span { padding:0.5rem 1rem; border:1px solid var(--accent); border-radius:4px; display:inline-block; background: rgba(56, 189, 248, 0.05); font-size: 0.9rem; font-weight: 500; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: all 0.3s ease; }
 .skills span:hover { background: rgba(56, 189, 248, 0.2); transform: translateY(-3px); box-shadow: 0 0 15px var(--accent); }
+
+/* Provenance line: a skill is only worth listing if you can say where it came from. */
+.skills span { text-align: center; line-height: 1.25; }
+.skills span em {
+  display: block;
+  margin-top: 0.2rem;
+  font-style: normal;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  color: var(--muted);
+}
+.skills-intro {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: -0.5rem 0 1.6rem;
+}
 
 /* =========================================
    8. MODAL (CENTERED)
@@ -383,8 +339,6 @@ iframe {
   display: none;
 }
 
-
-
 .modal.open .modal-content { animation: modalLaunch 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 @keyframes modalLaunch { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
@@ -403,44 +357,46 @@ iframe {
 
 #modal-3d-container { width: 100%; margin-bottom: 2rem; display: none; position: relative; height: 500px; }
 model-viewer { width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.2); border: 1px solid var(--border-color); border-radius: 8px; }
-body.blueprint-mode model-viewer { background-color: #f0f0f0; border-color: #000; }
 
 #modal-chart-container { 
     max-width: 600px; margin: 2rem auto; position: relative; height: 350px; 
     background: rgba(15, 23, 42, 0.4); border-radius: 12px; padding: 10px;
 }
-body.blueprint-mode #modal-chart-container { background: rgba(0, 0, 0, 0.05); }
-body.blueprint-mode #modal-chart-container canvas { filter: invert(1) hue-rotate(180deg); }
 
 #modal-code-container { margin: 1.5rem 0; background: #1e1e1e; border: 1px solid var(--border-color); border-radius: 6px; padding: 1rem; overflow-x: auto; }
 #modal-code-container h4 { color: var(--accent); margin-bottom: 0.5rem; font-family: 'Courier Prime', monospace; font-size: 0.9rem; }
 .code-block { font-family: 'Courier Prime', monospace; font-size: 0.85rem; color: #d4d4d4; white-space: pre-wrap; margin: 0; }
-body.blueprint-mode #modal-code-container { background: #f5f5f5; border-color: #ccc; }
-body.blueprint-mode .code-block { color: #333; }
 
 #modal-video-container { margin-top: 1.5rem; width: 100%; }
 .video-label { color: var(--accent); font-family: var(--font-header); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 0.8rem; text-align: left; }
-body.blueprint-mode .video-label { color: #1e3a8a; }
-body.blueprint-mode #modal-video-container video { border-color: #000 !important; background: #fff; }
 
 .spec-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; font-family: 'Courier Prime', monospace; border: 1px solid var(--border-color); }
 .spec-table th, .spec-table td { padding: 0.8rem; border-bottom: 1px solid rgba(56, 189, 248, 0.1); text-align: left; }
 .spec-table th { background: rgba(56, 189, 248, 0.1); color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
 .spec-table tr:last-child td { border-bottom: none; }
-body.blueprint-mode .spec-table th { background: rgba(0,0,0,0.1); color: #000; }
-body.blueprint-mode .spec-table td { color: #333; border-bottom-color: rgba(0,0,0,0.1); }
 
 .contact-form { max-width:600px; margin:auto; display:flex; flex-direction:column; gap:1rem; }
 .form-group { display:flex; gap:1rem; }
 input, textarea { background:rgba(255,255,255,0.05); border:1px solid var(--border-color); padding:1rem; color:var(--light); width:100%; font-family: inherit; border-radius: 4px; }
 input:focus, textarea:focus { border-color: var(--accent); outline: none; background: rgba(96, 165, 250, 0.05); }
-body.blueprint-mode input, body.blueprint-mode textarea { background: #fff; }
 
 .rocket-emoji { position: absolute; font-size: 2.5rem; z-index: 1000; pointer-events: none; filter: drop-shadow(0 0 10px rgba(255, 100, 0, 0.5)); }
 .exhaust-particle { position: absolute; border-radius: 50%; pointer-events: none; z-index: 999; mix-blend-mode: screen; filter: blur(1px); }
 
 .btn { display:inline-block; padding:0.8rem 2rem; border-radius:6px; background:rgba(56, 189, 248, 0.1); border:1px solid var(--accent); color:var(--accent); font-weight:600; text-decoration:none; transition: all 0.3s ease; margin-top:1.5rem; cursor:pointer; backdrop-filter: blur(5px); font-family: var(--font-header); letter-spacing: 0.5px; }
 .btn:hover { background:var(--accent); color: var(--bg); transform: translateY(-5px); box-shadow: 0 0 25px var(--accent); }
+
+/* Three hero buttons need a real row: even gaps instead of collapsed inline
+   whitespace, and a clean wrap on narrow screens. The container takes over
+   .btn's top margin so wrapped rows don't double up on vertical space. */
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.hero-buttons .btn { margin-top: 0; }
 
 #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s; font-family: var(--font-header); font-weight: 500; }
 .loader { border: 3px solid rgba(56, 189, 248, 0.2); border-top: 3px solid var(--accent); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 1rem; }
@@ -462,23 +418,6 @@ footer { text-align:center; padding:3rem 1rem; color:var(--muted); font-size: 0.
 
 .fade-in { opacity:0; transform:translateY(20px) translate3d(0,0,0); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
 .fade-in.visible { opacity:1; transform:translateY(0); }
-
-.rocket-btn { position:fixed; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:99; transition: all 0.3s; border: 1px solid var(--border-color); color: var(--accent); bottom:2rem; right:2rem; background: rgba(11, 14, 20, 0.9); opacity:0; pointer-events:none; }
-.rocket-btn:hover { border-color: var(--accent); color: #fff; transform: translateY(-3px); }
-.rocket-btn.show { opacity:1; pointer-events:all; }
-.rocket-btn.liftoff { animation: launchRocket 1s ease-in forwards; pointer-events: none; }
-@keyframes launchRocket { 0% { transform: translateY(0) scale(1); } 20% { transform: translateY(10px) scale(0.9); } 100% { transform: translateY(-120vh) scale(1.2); opacity: 0; } }
-.ctrl-label { position: absolute; background: rgba(11, 14, 20, 0.95); border: 1px solid var(--accent); color: var(--accent); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; opacity: 0; transition: 0.3s; pointer-events: none; white-space: nowrap; font-family: var(--font-header); top: 50%; transform: translateY(-50%); letter-spacing: 1px; }
-.left-side { right: 65px; } .right-side { left: 65px; }
-.rocket-btn:hover .ctrl-label { opacity: 1; }
-
-.blueprint-btn { position:fixed; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:99; transition: all 0.3s; border: 1px solid var(--border-color); color: var(--accent); bottom: 2rem; left: 2rem; background: rgba(11, 14, 20, 0.9); opacity: 0.8; }
-.blueprint-btn:hover { opacity: 1; border-color: var(--accent); color: #fff; }
-.blueprint-btn:hover .ctrl-label { opacity: 1; }
-
-.icon-cosmos { display: none; }
-body.blueprint-mode .icon-drafting { display: none; }
-body.blueprint-mode .icon-cosmos { display: block; }
 
 /* =========================================
    NEW EXPERIENCE TIMELINE (Photo Left / Card Right)
@@ -553,7 +492,8 @@ body.blueprint-mode .icon-cosmos { display: block; }
   transform: scale(1.03);
   border-color: var(--accent);
 }
-.timeline-img-wrapper img {
+.timeline-img-wrapper img,
+.timeline-img-wrapper video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -583,7 +523,14 @@ body.blueprint-mode .icon-cosmos { display: block; }
   box-shadow: 0 0 15px rgba(0,0,0,0.5);
 }
 /* Brand Colors for Dots */
-.dot-lsdo { background: #3b82f6; }   /* Blue */
+.dot-starfish { background: #f97316; } /* Orange */
+/* Four characters in a 37px inner circle — shrink the type and pull it tight. */
+.dot-lsdo {
+  background: #3b82f6; /* Blue */
+  font-size: 0.66rem;
+  letter-spacing: -0.2px;
+  white-space: nowrap;
+}
 .dot-planet { background: #00f3ff; color: #000; } /* Cyan */
 .dot-viasat { background: #1e3a8a; } /* Navy */
 
@@ -640,6 +587,44 @@ body.blueprint-mode .icon-cosmos { display: block; }
 .read-more:hover { gap: 10px; color: #fb7185; }
 .read-more::after { content: '→'; }
 
+#research .timeline-row:last-child { margin-bottom: 0; }
+
+/* A second "Read More" on the same card — quieter than the primary link. */
+.read-more.try-it {
+  color: var(--accent);
+  margin-left: 1.25rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.read-more.try-it:hover { color: #7dd3fc; }
+
+/* An entry that hasn't happened yet: no image, no link, visibly pending. */
+.timeline-row.upcoming .exp-card {
+  border-style: dashed;
+  opacity: 0.72;
+}
+.timeline-row.upcoming .date-label { font-style: italic; }
+/* A transparent wide-banner logo needs a white plate behind it, and must be
+   contained rather than cover-cropped into the 16/9 box. */
+.timeline-img-wrapper.logo-wrapper {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.4rem 1.6rem;
+}
+.timeline-img-wrapper.logo-wrapper img {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Keeps .timeline-dot's 4px var(--bg) border so the gap to the line survives. */
+.dot-slab { background: #8c1515; } /* Stanford cardinal */
+.timeline-row.upcoming .timeline-dot { opacity: 0.8; }
+
 /* 3. Mobile Responsiveness */
 @media (max-width: 900px) {
   .timeline-row {
@@ -650,14 +635,26 @@ body.blueprint-mode .icon-cosmos { display: block; }
   .timeline-line {
     left: 22px; /* Move line to left edge */
   }
-  .col-left {
-    display: none; /* Hide large images on mobile to save space */
-  }
+  /* Stack order: dot, image, card. The image stays, just smaller and
+     aligned with the card rather than dropped entirely. */
   .col-center {
+    order: 1;
     justify-content: flex-start;
     margin-bottom: -10px;
   }
+  .col-left {
+    order: 2;
+    padding-left: 60px;
+  }
   .col-right {
+    order: 3;
     padding-left: 60px; /* Make space for the dot/line on the left */
+  }
+  .timeline-img-wrapper {
+    max-width: none;
+    aspect-ratio: 21/9;
+  }
+  .timeline-img-wrapper:hover {
+    transform: none; /* No hover state on touch */
   }
 }
