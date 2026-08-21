@@ -31,11 +31,21 @@ const projectButtons = document.querySelectorAll('.read-more[data-project], .pro
   // browser clamps the scroll offset to 0. Remember where we were and put it back.
   let savedScrollY = 0;
 
+  // Below this width the modal is already full-screen, and squeezing a page
+  // inside an iframe there costs the chrome around it for nothing. Navigate to
+  // the page instead; its own back-to-portfolio pill handles the return trip.
+  const MODAL_MIN_WIDTH = 768;
+
   projectButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
           e.preventDefault();
           const iframe = document.getElementById('modal-iframe');
           const url = btn.getAttribute('data-project');
+
+          if (window.matchMedia('(max-width: ' + MODAL_MIN_WIDTH + 'px)').matches) {
+              window.location.href = url;
+              return;
+          }
 
           // --- 1. DYNAMICALLY LOAD CSS (LAZY LOAD) ---
           // Check if we have already loaded this CSS to avoid duplicates
@@ -94,9 +104,46 @@ const projectButtons = document.querySelectorAll('.read-more[data-project], .pro
 
   const menuToggle = document.getElementById('mobile-menu');
   const navMenu = document.querySelector('.nav-menu');
-  menuToggle.addEventListener('click', () => { 
-      menuToggle.classList.toggle('is-active'); 
-      navMenu.classList.toggle('active'); 
+
+  menuToggle.setAttribute('role', 'button');
+  menuToggle.setAttribute('tabindex', '0');
+  menuToggle.setAttribute('aria-label', 'Menu');
+  menuToggle.setAttribute('aria-controls', 'nav-menu');
+  menuToggle.setAttribute('aria-expanded', 'false');
+  navMenu.id = 'nav-menu';
+
+  function setNav(open) {
+    menuToggle.classList.toggle('is-active', open);
+    navMenu.classList.toggle('active', open);
+    // The panel is a full-height fixed overlay, so the page behind it has to
+    // stop scrolling or a swipe moves the content instead of the menu.
+    document.body.classList.toggle('nav-open', open);
+    menuToggle.setAttribute('aria-expanded', String(open));
+  }
+
+  menuToggle.addEventListener('click', () => {
+    setNav(!navMenu.classList.contains('active'));
+  });
+
+  menuToggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setNav(!navMenu.classList.contains('active'));
+    }
+  });
+
+  // Every entry is an in-page anchor, so without this the panel stays open
+  // over the section it just jumped to.
+  navMenu.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => setNav(false));
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navMenu.classList.contains('active')) setNav(false);
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && navMenu.classList.contains('active')) setNav(false);
   });
 
 

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>AB | LEO Orbit Determination</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Two sequential estimators, a Conventional and an Extended Kalman Filter, recovering an 18-state low Earth orbit solution from range and range-rate tracking across three ground stations in MATLAB.">
+  <meta property="og:title" content="LEO Orbit Determination | Alexander Burns">
+  <meta property="og:description" content="Two sequential estimators, a Conventional and an Extended Kalman Filter, recovering an 18-state low Earth orbit solution from range and range-rate tracking across three ground stations in MATLAB.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ajburns.com/projects/orbitdet.html">
+  <meta property="og:image" content="https://ajburns.com/assets/images/project_orbitdet.png">
+  <meta property="og:image:width" content="900">
+  <meta property="og:image:height" content="675">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../css/experiences.css">
+  <style>
+    body {
+      background-color: #ffffff;
+    }
+
+    /* Two figures side by side. The shared stylesheet only has .quadrotor-pair
+       for this, which crops to fill; these plots need to be read, not cropped. */
+    .figure-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .figure-pair figure {
+      margin: 0;
+    }
+
+    .figure-pair img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 6px;
+      border: 1px solid #e4e4e4;
+    }
+
+    @media (max-width: 700px) {
+      .figure-pair {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Full-width figures. The shared .project-image is locked to 50% by a
+       !important rule, so these need their own block. */
+    .figure-wide {
+      margin: 0 0 0.5rem;
+    }
+
+    .figure-wide img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 6px;
+      border: 1px solid #e4e4e4;
+    }
+
+    /* Results table. No table styling exists in the shared sheet. */
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      margin: 0.5rem 0 0.75rem;
+    }
+
+    .results-table caption {
+      caption-side: top;
+      text-align: left;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #666;
+      padding-bottom: 8px;
+    }
+
+    .results-table th,
+    .results-table td {
+      border-bottom: 1px solid #e0e0e0;
+      padding: 8px 10px;
+      text-align: right;
+    }
+
+    .results-table th:first-child,
+    .results-table td:first-child {
+      text-align: left;
+    }
+
+    .results-table thead th {
+      border-bottom: 1px solid #b8b8b8;
+      font-size: 0.75rem;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #555;
+      font-weight: 600;
+    }
+
+    .results-table td {
+      font-family: "Courier New", monospace;
+    }
+
+    .results-table td:first-child {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .results-table .win {
+      color: #0a7d4b;
+      font-weight: bold;
+    }
+
+    .table-note {
+      font-size: 0.8rem;
+      font-style: italic;
+      color: #666;
+      margin: 0 0 0.5rem;
+    }
+
+    @media (max-width: 560px) {
+      /* Three numeric columns will not compress further, so let the table
+         scroll sideways instead of shrinking the type to nothing. */
+      .results-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<a href="../index.html" class="back-home">
+  <svg class="back-home-arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+    <path d="M10 3 L5 8 L10 13" />
+  </svg>
+  <span>Portfolio</span>
+</a>
+
+  <header class="project-page-hero"
+    style="background-image: url('../assets/images/projects/orbitdet/hero.jpg');">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>LEO Orbit Determination</h1>
+      <p class="project-page-hero-subtitle">18-State Sequential Filtering in MATLAB</p>
+    </div>
+  </header>
+
+  <main class="project-detail-container">
+
+    <!-- OVERVIEW -->
+    <section class="experience-section">
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            I built two sequential estimators, a <strong>Conventional Kalman Filter</strong> and an
+            <strong>Extended Kalman Filter</strong>, to recover the trajectory of a satellite in a 700 km orbit from
+            range and range-rate tracking alone. Both solve simultaneously for the vehicle state, the gravitational
+            and drag parameters acting on it, and the positions of the tracking stations themselves.
+          </p>
+          <p>
+            The two filters share identical dynamics, measurement model, and observation set, so the only variable
+            between them is <strong>when the problem gets relinearized</strong>. That isolates the cost of
+            linearization error, which turns out to separate a solution sitting at the measurement noise floor from
+            one sitting an order of magnitude above it.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE ESTIMATION PROBLEM -->
+    <section class="experience-section">
+      <h3 class="experience-title">The Estimation Problem</h3>
+
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            The estimated state is <strong>18 elements</strong>: inertial position and velocity, the gravitational
+            parameter <em>&mu;</em>, the <em>J</em><sub>2</sub> oblateness coefficient, the drag coefficient
+            <em>C<sub>D</sub></em>, and the body-fixed coordinates of three tracking stations. Estimating the
+            stations matters, since a surveyed position off by centimetres biases every measurement that station
+            produces, and a filter assuming those positions are perfect has nowhere to put that error except into the
+            orbit.
+          </p>
+          <p>
+            Dynamics are two-body gravity with <em>J</em><sub>2</sub> and exponential-atmosphere drag, propagated at
+            1e-12 tolerance against 385 observations over a five-hour arc with <strong>1 cm range and 1 mm/s
+              range-rate noise</strong>. I derived the linearized dynamics matrix and observation Jacobian
+            symbolically and emitted them to MATLAB, keeping the partials consistent with the propagator they
+            differentiate.
+          </p>
+          <p>
+            Station 101 is deliberately held fixed. It is a ship in the Pacific, and with no model for current,
+            heading, or sea state there is nothing to propagate its position with. Left free, its estimate would
+            wander and its covariance would grow without bound.
+          </p>
+        </div>
+      </div>
+
+      <figure class="figure-wide">
+        <img loading="lazy" src="../assets/images/projects/orbitdet/tracking-geometry.png"
+          alt="Range measurements versus time coloured by station, with a pass timeline showing when each station has visibility">
+      </figure>
+      <p class="figure-caption">Measured range by station, with the pass timeline below. Each station sees the
+        vehicle for only a few minutes per revolution, so the solution is built from short, geometrically distinct
+        arcs rather than continuous tracking.</p>
+    </section>
+
+    <!-- CKF VS EKF -->
+    <section class="experience-section">
+      <h3 class="experience-title">Where the Two Filters Diverge</h3>
+
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            Both filters share the same time and measurement updates, differing only in what they linearize about.
+            The <strong>CKF</strong> fixes a reference trajectory at the start and estimates a deviation from it for
+            the entire arc, so as the truth drifts away the linear approximation degrades with no mechanism to
+            recover. The <strong>EKF</strong> folds each correction back into the reference immediately and recomputes
+            the state transition matrix and observation Jacobian about the updated point, so linearization error stops
+            accumulating.
+          </p>
+          <p>
+            That introduces a failure mode of its own: relinearizing about a bad early estimate can diverge the
+            filter. I resolved it with a <strong>15-observation warm-up</strong>, running conventionally until the
+            state correction settles before updating the reference, which eliminated the divergence entirely.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="experience-section">
+      <h3 class="experience-title">Reading the Residuals</h3>
+
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            Both filters open against the same <strong>6.7 km range</strong> and 5.2 m/s range-rate initial error,
+            visible in the pre-fit residuals. They separate on the post-fit side. Against a 1 cm noise floor, a
+            converged filter should leave residuals of that size and no structure beyond it: the <strong>EKF lands at
+              1.45 cm</strong> while the <strong>CKF sits at 11.6 cm</strong>. What remains in the CKF residuals is
+            not measurement noise but leftover linearization error the filter cannot remove.
+          </p>
+        </div>
+        <div class="project-image">
+          <img loading="lazy" src="../assets/images/projects/orbitdet/ckf-prefit.png"
+            alt="Pre-fit range and range-rate residuals showing roughly 6.7 km of initial range error">
+          <p class="figure-caption">Pre-fit residuals showing the ~6.7 km initial state error both filters start
+            from.</p>
+        </div>
+      </div>
+
+      <div class="figure-pair">
+        <figure>
+          <img loading="lazy" src="../assets/images/projects/orbitdet/ckf-postfit.png"
+            alt="CKF post-fit range and range-rate residuals, roughly 0.1 m in range">
+        </figure>
+        <figure>
+          <img loading="lazy" src="../assets/images/projects/orbitdet/ekf-postfit.png"
+            alt="EKF post-fit range and range-rate residuals, roughly 0.015 m in range">
+        </figure>
+      </div>
+      <p class="figure-caption">Post-fit residuals, CKF (left) and EKF (right). Note the vertical scales differ by
+        roughly an order of magnitude.</p>
+
+      <div class="project-row">
+        <div class="project-text">
+          <table class="results-table">
+            <caption>Converged solution, both filters</caption>
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>CKF</th>
+                <th>EKF</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Post-fit range RMS</td>
+                <td>0.1155 m</td>
+                <td class="win">0.0145 m</td>
+              </tr>
+              <tr>
+                <td>Post-fit range-rate RMS</td>
+                <td>0.001689 m/s</td>
+                <td class="win">0.001388 m/s</td>
+              </tr>
+              <tr>
+                <td>Position 1-&sigma; x</td>
+                <td>0.0102 m</td>
+                <td class="win">0.0098 m</td>
+              </tr>
+              <tr>
+                <td>Position 1-&sigma; y</td>
+                <td>0.0035 m</td>
+                <td>0.0035 m</td>
+              </tr>
+              <tr>
+                <td>Position 1-&sigma; z</td>
+                <td>0.0117 m</td>
+                <td class="win">0.0116 m</td>
+              </tr>
+              <tr>
+                <td>Estimated <em>C<sub>D</sub></em></td>
+                <td>2.1590</td>
+                <td>2.1979</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="table-note">Measurement noise: &sigma;<sub>&rho;</sub> = 0.01 m,
+            &sigma;<sub>&rho;&#775;</sub> = 0.001 m/s.</p>
+          <p>
+            The recovered states agree closely and the reported uncertainties are nearly identical, at
+            <strong>sub-centimetre level in every axis</strong>. Only the residuals separate them. Two filters can
+            report the same covariance while only one has extracted everything the measurements contain, which is why
+            post-fit residual structure is the check that matters.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COVARIANCE GEOMETRY -->
+    <section class="experience-section">
+      <h3 class="experience-title">Covariance Geometry</h3>
+
+      <div class="figure-pair">
+        <figure>
+          <img loading="lazy" src="../assets/images/projects/orbitdet/ckf-ellipsoid.png"
+            alt="CKF 1-sigma position error ellipsoid, pinched along the y axis">
+        </figure>
+        <figure>
+          <img loading="lazy" src="../assets/images/projects/orbitdet/ekf-ellipsoid.png"
+            alt="EKF 1-sigma position error ellipsoid, pinched along the y axis">
+        </figure>
+      </div>
+      <p class="figure-caption">1-&sigma; position-error ellipsoids from the final covariance, CKF (left) and EKF
+        (right).</p>
+
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            To make the final covariance interpretable, I took the eigendecomposition of its position block. The
+            eigenvectors give the principal axes of the uncertainty and the square roots of the eigenvalues give the
+            1-&sigma; extent along each, producing a direct geometric picture of what the tracking network constrains.
+          </p>
+          <p>
+            Both ellipsoids come out visibly <strong>non-spherical, pinched along y</strong>, which resolves to 3.5 mm
+            while x and z sit near 1 cm. This is a station-geometry result rather than a filter result: from where
+            these three stations sit, the measurement directions do not span the three axes evenly. A mission needing
+            isotropic position knowledge would have to add a station or accept a directional error budget.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- OMITTING A STATION -->
+    <section class="experience-section">
+      <h3 class="experience-title">Using a Station Without Solving For It</h3>
+
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            To test whether a station's measurements can be used without carrying its coordinates in the solve, I
+            re-ran both filters with Station 337 pinned to its surveyed position. The reported uncertainty
+            <em>improves</em>, with position 1-&sigma; tightening from [0.0098, 0.0035, 0.0116] m to
+            [0.0024, 0.0023, 0.0046] m. Judged on covariance alone, that reads as a free win.
+          </p>
+          <p>
+            The residuals say otherwise. Post-fit range RMS jumps from <strong>0.0145 m to 1.0733 m</strong>, seventy
+            times worse and a hundred times above the noise floor, while the estimated drag coefficient slides from
+            2.198 to 1.252 absorbing a bias unrelated to drag. Pinning the station removed the filter's ability to
+            attribute that station's error to the station, so the error redistributed into the remaining states while
+            the covariance, no longer tracking it, shrank.
+          </p>
+          <p>
+            <strong>The filter became more confident and less correct at the same time</strong>, a compact
+            demonstration of why a reported covariance is only trustworthy alongside a residual check.
+          </p>
+        </div>
+      </div>
+
+      <figure class="figure-wide">
+        <img loading="lazy" src="../assets/images/projects/orbitdet/residual-rms.png"
+          alt="Horizontal bar chart of post-fit range residual RMS on a log scale for all four filter runs against the 1 cm noise floor">
+      </figure>
+      <p class="figure-caption">Post-fit range residual RMS across all four runs. Pinning the station costs two
+        orders of magnitude in residual fit while the reported uncertainty moves the other way.</p>
+    </section>
+
+    <!-- IMPLEMENTATION -->
+    <section class="experience-section">
+      <h3 class="experience-title">Implementation</h3>
+
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            The estimators are a modular set of MATLAB scripts sharing one setup routine, one dynamics function, one
+            observation model, and one Jacobian source. Drawing every filter from the same components keeps the
+            comparison on the algorithm rather than on incidental configuration differences, and adding a variant such
+            as a pinned station is a flag change rather than a forked file. A single entry point runs any combination
+            of filters and writes each one's plots and converged numbers to its own output directory.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="skills-section-lsdo">
+      <div class="skills-header">TOP SKILLS &amp; TOOLS UTILIZED</div>
+      <div class="skills-grid">
+        <div class="skill-tag">Kalman Filtering (CKF / EKF)</div>
+        <div class="skill-tag">Orbit Determination</div>
+        <div class="skill-tag">Covariance Analysis</div>
+        <div class="skill-tag">MATLAB &amp; Symbolic Toolbox</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer-bar">
+    <div class="footer-container">
+      <div class="footer-left">
+        <a href="https://www.linkedin.com/in/alex-burns1/" target="_blank" class="linkedin-link">
+          <img loading="lazy" src="../assets/images/LinkedIn_icon.png" alt="LinkedIn" class="linkedin-icon">
+          <span class="linkedin-text">LinkedIn</span>
+        </a>
+      </div>
+
+      <div class="footer-copyright">
+        &copy; 2026 Alexander Burns
+      </div>
+
+      <div class="footer-right">
+        <a href="mailto:ajburns@stanford.edu" class="email-link">
+          ajburns@stanford.edu
+        </a>
+      </div>
+    </div>
+  </footer>
+
+<script src="../js/subpage.js" defer></script>
+</body>
+
+</html>

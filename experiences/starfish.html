@@ -4,6 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <title>AB | Starfish Space</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GNC engineering internship at Starfish Space: rendezvous and proximity operations flight software for the Otter servicing vehicle, including a modular attitude control framework, high-fidelity solar array shadowing, and a software-in-the-loop thermal controller.">
+  <meta property="og:title" content="Starfish Space Internship | Alexander Burns">
+  <meta property="og:description" content="GNC engineering internship at Starfish Space: rendezvous and proximity operations flight software for the Otter servicing vehicle, including a modular attitude control framework, high-fidelity solar array shadowing, and a software-in-the-loop thermal controller.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ajburns.com/experiences/starfish.html">
+  <meta property="og:image" content="https://ajburns.com/assets/images/experiences/starfish/hero.jpg">
+  <meta property="og:image:width" content="1584">
+  <meta property="og:image:height" content="396">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="../css/experiences.css">
   <style>
     body {
@@ -242,6 +252,13 @@
 
 <body>
 
+<a href="../index.html" class="back-home">
+  <svg class="back-home-arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+    <path d="M10 3 L5 8 L10 13" />
+  </svg>
+  <span>Portfolio</span>
+</a>
+
   <header class="project-page-hero" style="background-image: url('../assets/images/experiences/starfish/hero.jpg');">
     <div class="hero-overlay"></div>
     <div class="hero-content">
@@ -433,7 +450,7 @@
           </p>
         </div>
         <div class="project-image">
-          <img src="../assets/images/experiences/starfish/raytrace.png"
+          <img loading="lazy" src="../assets/images/experiences/starfish/raytrace.png"
             alt="Ray tracing schematic: sunlight cast past the client onto Otter's arrays, with the resulting per-panel visibility fraction">
           <p class="figure-caption">Otter Client shadowing results for different orientations.</p>
         </div>
@@ -441,7 +458,7 @@
 
       <div class="project-row">
         <div class="project-image">
-          <img src="../assets/images/experiences/starfish/lut.png"
+          <img loading="lazy" src="../assets/images/experiences/starfish/lut.png"
             alt="Solar array visibility look-up table over azimuth and elevation, before and after parallelization">
           <p class="figure-caption">The same azimuth &times; elevation visibility table before and after
             parallelization.</p>
@@ -477,7 +494,7 @@
           </p>
         </div>
         <div class="project-image">
-          <img src="../assets/images/experiences/starfish/firmware-loop.png"
+          <img loading="lazy" src="../assets/images/experiences/starfish/firmware-loop.png"
             alt="Python server and C++ firmware client exchanging temperatures and heater states, and the resulting component temperature sawtooth against setpoint buffers">
           <p class="figure-caption">Socket interface and example temperature response profile.</p>
         </div>
@@ -486,7 +503,7 @@
 
       <div class="project-row">
         <div class="project-image">
-          <img src="../assets/images/experiences/starfish/tc-swap.png"
+          <img loading="lazy" src="../assets/images/experiences/starfish/tc-swap.png"
             alt="Block diagram: one thermal plant feeding either the Python mock controller or the C++ firmware controller, selected by a YAML switch">
           <p class="figure-caption">One plant, two controllers - a simple config switch.</p>
         </div>
@@ -521,7 +538,7 @@
     <div class="footer-container">
       <div class="footer-left">
         <a href="https://www.linkedin.com/in/alex-burns1/" target="_blank" class="linkedin-link">
-          <img src="../assets/images/LinkedIn_icon.png" alt="LinkedIn" class="linkedin-icon">
+          <img loading="lazy" src="../assets/images/LinkedIn_icon.png" alt="LinkedIn" class="linkedin-icon">
           <span class="linkedin-text">LinkedIn</span>
         </a>
       </div>
@@ -1058,6 +1075,7 @@
     }());
   </script>
 
+<script src="../js/subpage.js" defer></script>
 </body>
 
 </html>
