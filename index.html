@@ -38,14 +38,12 @@
 
   <nav>
     <div class="nav-container">
-      <a href="https://linkedin.com/in/alex-burns1" target="_blank" class="logo">
-        <img src="assets/images/profile.jpeg" alt="Alexander Burns" class="logo-image">
-      </a>
 
       <div class="menu-toggle" id="mobile-menu">
         <span class="bar"></span><span class="bar"></span><span class="bar"></span>
       </div>
       <ul class="nav-menu">
+        <li><a href="#home">Home</a></li>
         <li><a href="#experiences">Internships</a></li>
         <li><a href="#research">Research</a></li>
         <li><a href="#projects">Projects</a></li>
@@ -55,21 +53,31 @@
     </div>
   </nav>
 
-  <header class="hero">
+  <header id='home' class="hero">
     <div class="hero-backdrop"></div>
     <div class="hero-content" id="hero-text">
-      <h1>Alexander Burns</h1>
-      <p class="subtitle">Aerospace Engineering Portfolio</p>
-      <p class="hero-text">
-        Stanford University M.S. Aerospace Engineering (2028). <br>
-        UC San Diego B.S. Aerospace Engineering Graduate (2026). <br>
-        Specializing in Astrodynamics, Controls, and Autonomous Systems.
-      </p>
-      <div class="hero-buttons">
-        <a href="#experiences" class="btn hero-btn">View Internships</a>
-        <a href="#research" class="btn hero-btn">View Research</a>
-        <a href="#contact" class="btn hero-btn">Contact Me</a>
+
+      <div class="hero-photo">
+        <div class="hero-photo-frame">
+          <img src="assets/headshot.png" alt="Alexander Burns" loading="eager">
+        </div>
       </div>
+
+      <div class="hero-text-col">
+        <h1>Alex Burns</h1>
+        <p class="hero-text">
+          Stanford University M.S. Aerospace Engineering (2028). <br>
+          UC San Diego B.S. Aerospace Engineering Graduate (2026). <br>
+          Specializing in Astrodynamics, Controls, and Autonomous Systems.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#experiences" class="btn hero-btn">View Internships</a>
+          <a href="#research" class="btn hero-btn">View Research</a>
+          <a href="#contact" class="btn hero-btn">Contact Me</a>
+        </div>
+      </div>
+
     </div>
   </header>
 
@@ -340,12 +348,6 @@
   </section>
 
   <footer>
-    <div class="footer-links">
-      <a href="https://linkedin.com/in/alex-burns1" target="_blank" class="footer-btn">LinkedIn</a>
-      <a href="mailto:ajburns@stanford.edu" class="footer-btn" id="email-link">Email</a>
-      <a href="assets/resume.pdf" target="_blank" class="footer-btn">Resume</a>
-    </div>
-
     <div class="system-status-bar">
       <span class="status-item">LOC: <span class="highlight">SAN DIEGO, CA</span></span>
       <span class="status-item">TIME UTC: <span id="utc-clock" class="highlight">00:00:00</span></span>
