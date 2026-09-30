@@ -59,7 +59,7 @@
 
       <div class="hero-photo">
         <a href="https://linkedin.com/in/alex-burns1" target="_blank" class="hero-photo-frame" aria-label="Alexander Burns on LinkedIn">
-          <img src="assets/headshot.png" alt="Alexander Burns" loading="eager">
+          <img src="assets/hero-portrait.webp" alt="Alexander Burns" loading="eager">
         </a>
       </div>
 
@@ -101,7 +101,7 @@
       <div class="timeline-row">
         <div class="col-left">
           <div class="timeline-img-wrapper">
-            <img src="assets/images/otter.jpg" alt="Starfish Space Otter Servicing Vehicle" loading="lazy">
+            <img src="assets/images/otter.webp" alt="Starfish Space Otter Servicing Vehicle" loading="lazy">
           </div>
         </div>
         <div class="col-center">
@@ -126,7 +126,7 @@
       <div class="timeline-row">
         <div class="col-left">
           <div class="timeline-img-wrapper">
-            <img src="assets/images/pelican.jpg" alt="Planet Satellite" loading="lazy">
+            <img src="assets/images/pelican.webp" alt="Planet Satellite" loading="lazy">
           </div>
         </div>
         <div class="col-center">
@@ -150,7 +150,7 @@
       <div class="timeline-row">
         <div class="col-left">
           <div class="timeline-img-wrapper">
-            <img src="assets/images/scc.jpg" alt="Viasat Control Center" loading="lazy">
+            <img src="assets/images/scc.webp" alt="Viasat Control Center" loading="lazy">
           </div>
         </div>
         <div class="col-center">
@@ -183,7 +183,7 @@
       <!-- <div class="timeline-row upcoming">
         <div class="col-left">
           <div class="timeline-img-wrapper logo-wrapper">
-            <img src="assets/images/slablogo.png" alt="Stanford Space Rendezvous Laboratory" loading="lazy">
+            <img src="assets/images/slablogo.webp" alt="Stanford Space Rendezvous Laboratory" loading="lazy">
           </div>
         </div>
         <div class="col-center">
@@ -232,72 +232,145 @@
     <div class="projects-wrapper">
       <h2>Projects</h2>
       <div class="projects-grid">
-        <div class="project-item">
-          <a href="assets/docs/MAE155_Team2_CoDR.pdf" target="_blank">
-            <img loading="lazy" src="assets/images/bwb.png" alt="BWB Aircraft">
-            <div class="project-overlay">
-              <div class="overlay-content">
-                <h3>Senior Design</h3>
-                <p>Blended Wing Body Aircraft</p>
-              </div>
+
+        <article class="project-item">
+          <a href="assets/docs/MAE155_Team2_CoDR.pdf" target="_blank" rel="noopener">
+            <div class="project-thumb">
+              <img loading="lazy" src="assets/images/bwb.webp" alt="Blended wing body airliner concept">
+            </div>
+            <div class="project-body">
+              <span class="project-context">Senior Design &middot; UCSD MAE 155A &middot; 2026</span>
+              <h3>Aircraft Conceptual Design</h3>
+              <p class="project-subject">Blended Wing Body Airliner &ldquo;Manta&rdquo;</p>
+              <p>
+                Fuselage as the lifting body, with a non-cylindrical cabin, aft-mounted high-bypass
+                turbofans, and twin vertical stabilizers.
+              </p>
+              <ul class="project-tags">
+                <li>Aircraft Design</li>
+                <li>Sizing</li>
+                <li>Trade Studies</li>
+              </ul>
+              <span class="project-cta">Read the design review (PDF)</span>
             </div>
           </a>
-        </div>
-        <div class="project-item">
+        </article>
+
+        <article class="project-item">
           <a href="projects/orbitdet.html" data-project="projects/orbitdet.html">
-            <img loading="lazy" src="assets/images/project_orbitdet.png" alt="Orbit Determination Error Ellipsoids">
-            <div class="project-overlay">
-              <div class="overlay-content">
-                <h3>LEO Orbit Determination</h3>
-                <p>Personal</p>
-              </div>
+            <div class="project-thumb">
+              <img loading="lazy" src="assets/images/project_orbitdet.webp" alt="Orbit determination error ellipsoids">
+            </div>
+            <div class="project-body">
+              <span class="project-context">Personal Project</span>
+              <h3>State Estimation &amp; Filtering</h3>
+              <p class="project-subject">LEO Orbit Determination</p>
+              <p>
+                A CKF and an EKF recovering an 18-state solution for a 700 km orbit from range and
+                range-rate tracking alone.
+              </p>
+              <ul class="project-tags">
+                <li>MATLAB</li>
+                <li>CKF / EKF</li>
+                <li>Covariance</li>
+              </ul>
+              <span class="project-cta">Read More</span>
             </div>
           </a>
-        </div>
-        <div class="project-item">
+        </article>
+
+        <article class="project-item">
           <a href="projects/yonder.html" data-project="projects/yonder.html">
-            <img loading="lazy" src="assets/images/project_yonder.jpg" alt="Yonder Dynamics Rover">
-            <div class="project-overlay">
-              <div class="overlay-content">
-                <h3>Rover Elbow Joint</h3>
-                <p>Yonder Dynamics (URC)</p>
-              </div>
+            <div class="project-thumb">
+              <img loading="lazy" src="assets/images/project_yonder.webp" alt="Yonder Dynamics competition rover">
+            </div>
+            <div class="project-body">
+              <span class="project-context">Yonder Dynamics (URC) &middot; 2023 &ndash; 2025</span>
+              <h3>Mechanical Design &amp; FEA</h3>
+              <p class="project-subject">Rover Arm Elbow Joint</p>
+              <p>
+                Topology optimization in ANSYS took <strong>15% of the weight out</strong> of the
+                elbow joint while raising its load capacity.
+              </p>
+              <ul class="project-tags">
+                <li>SolidWorks</li>
+                <li>ANSYS FEA</li>
+                <li>Topology Opt.</li>
+              </ul>
+              <span class="project-cta">Read More</span>
             </div>
           </a>
-        </div>
-        <div class="project-item">
+        </article>
+
+        <article class="project-item">
           <a href="projects/fsae.html" data-project="projects/fsae.html">
-            <img loading="lazy" src="assets/images/project_fsae.jpg" alt="Triton Racing Car">
-            <div class="project-overlay">
-              <div class="overlay-content">
-                <h3>Carbon-Fiber Aero Package</h3>
-                <p>Triton Racing (FSAE)</p>
-              </div>
+            <div class="project-thumb">
+              <img loading="lazy" src="assets/images/project_fsae.webp" alt="Triton Racing Formula SAE car">
+            </div>
+            <div class="project-body">
+              <span class="project-context">Triton Racing (FSAE) &middot; 2023</span>
+              <h3>Applied Aerodynamics &amp; Composites</h3>
+              <p class="project-subject">Carbon-Fiber Aero Package</p>
+              <p>
+                Triton Racing's first full-car aero package &mdash; carbon fiber over a foam core,
+                with breakaway mounts sized in FEA.
+              </p>
+              <ul class="project-tags">
+                <li>SolidWorks</li>
+                <li>Ansys Fluent</li>
+                <li>Composites</li>
+              </ul>
+              <span class="project-cta">Read More</span>
             </div>
           </a>
-        </div>
-        <div class="project-item">
+        </article>
+
+        <article class="project-item">
           <a href="projects/cfd.html" data-project="projects/cfd.html">
-            <img loading="lazy" src="assets/images/project_cfd.png" alt="CFD Cold Flow">
-            <div class="project-overlay">
-              <div class="overlay-content">
-                <h3>Cold Flow Simulation</h3>
-                <p>Personal</p>
-              </div>
+            <div class="project-thumb">
+              <img loading="lazy" src="assets/images/project_cfd.webp" alt="CFD velocity contour of a rocket nozzle">
+            </div>
+            <div class="project-body">
+              <span class="project-context">UCSD Rocket Propulsion Lab &middot; 2025</span>
+              <h3>Computational Fluid Dynamics</h3>
+              <p class="project-subject">Vortex-Cooled Rocket Engine</p>
+              <p>
+                A 62k-to-371k-cell mesh study and Richardson extrapolation established
+                <strong>grid independence</strong> before any result was trusted.
+              </p>
+              <ul class="project-tags">
+                <li>Ansys Fluent</li>
+                <li>Turbulence</li>
+                <li>Mesh Study</li>
+              </ul>
+              <span class="project-cta">Read More</span>
             </div>
           </a>
-        </div>
-        <div class="project-item">
+        </article>
+
+        <article class="project-item">
           <a href="projects/wingspar.html" data-project="projects/wingspar.html">
-            <img loading="lazy" src="assets/images/project_wingspar.png" alt="Wing Spar">
-            <div class="project-overlay">
-              <div class="overlay-content">
-                <h3>Cessna 172 Wing Structure</h3>
-                <p>Personal</p>
-              </div>
+            <div class="project-thumb">
+              <img loading="lazy" src="assets/images/project_wingspar.webp" alt="Cessna 172 wing section geometry and applied loads">
+            </div>
+            <div class="project-body">
+              <span class="project-context">Personal Project &middot; 2025</span>
+              <h3>Structural Analysis &amp; Sizing</h3>
+              <p class="project-subject">Cessna 172 Wing Structure</p>
+              <p>
+                Sizes stringers and skin across the V-n envelope for minimum weight at a positive
+                margin of safety, Al 7075-T6 against carbon/epoxy.
+              </p>
+              <ul class="project-tags">
+                <li>MATLAB</li>
+                <li>Structures</li>
+                <li>Composites</li>
+              </ul>
+              <span class="project-cta">Read More</span>
             </div>
           </a>
-        </div>
+        </article>
+
       </div>
     </div>
   </section>

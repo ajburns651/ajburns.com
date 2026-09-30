@@ -77,8 +77,12 @@ const projectButtons = document.querySelectorAll('.read-more[data-project], .pro
         // --- 3. LOAD CONTENT ---
         // Get title from closest card or use default
         let cardTitle = "Project Details";
-        if (btn.closest('.exp-card')) {
-            cardTitle = btn.closest('.exp-card').querySelector('h3')?.textContent || cardTitle;
+        // A project card's h3 names the discipline; its subject line names the
+        // thing the loaded page is actually about, so prefer that for the title.
+        const card = btn.closest('.exp-card') || btn.closest('.project-item');
+        if (card) {
+            const heading = card.querySelector('.project-subject') || card.querySelector('h3');
+            cardTitle = heading?.textContent?.trim() || cardTitle;
         }
         modalTitle.textContent = cardTitle;
 
