@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>AB | Cislunar Manifold Transfer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A ballistic transfer from an Earth-Moon L2 Lyapunov orbit to an L1 Lyapunov orbit, built from invariant manifolds and multiple shooting in the CR3BP, then checked against a SPICE ephemeris model in MATLAB.">
+  <meta property="og:title" content="Cislunar Manifold Transfer | Alexander Burns">
+  <meta property="og:description" content="A ballistic transfer from an Earth-Moon L2 Lyapunov orbit to an L1 Lyapunov orbit, built from invariant manifolds and multiple shooting in the CR3BP, then checked against a SPICE ephemeris model in MATLAB.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ajburns.com/projects/cislunar.html">
+  <meta property="og:image" content="https://ajburns.com/assets/images/project_cislunar.jpg">
+  <meta property="og:image:width" content="1100">
+  <meta property="og:image:height" content="619">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../css/experiences.css">
+  <style>
+    body {
+      background-color: #ffffff;
+    }
+
+    /* Full-width figures. The shared .project-image is locked to 50% by a
+       !important rule, so these need their own block. */
+    .figure-wide {
+      margin: 0 0 0.5rem;
+    }
+
+    .figure-wide img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 6px;
+      border: 1px solid #e4e4e4;
+    }
+
+    /* The ephemeris plot is mostly empty axis at full width, so cap it. */
+    .figure-wide.figure-narrow img {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+
+<a href="../index.html" class="back-home">
+  <svg class="back-home-arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+    <path d="M10 3 L5 8 L10 13" />
+  </svg>
+  <span>Portfolio</span>
+</a>
+
+  <header class="project-page-hero"
+    style="background-image: url('../assets/images/projects/cislunar/hero.jpg');">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Cislunar Manifold Transfer</h1>
+      <p class="project-page-hero-subtitle">Earth&ndash;Moon L2 to L1 in the CR3BP</p>
+    </div>
+  </header>
+
+  <main class="project-detail-container">
+
+    <!-- OVERVIEW -->
+    <section class="experience-section">
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            As part of a self-directed cislunar literature review, I worked through Pavlak's PhD thesis and
+            built a transfer that carries a
+            spacecraft from a periodic orbit around the Earth&ndash;Moon <strong>L2</strong> point to one around
+            <strong>L1</strong> with <strong>no maneuver</strong>. The path is made almost entirely out of the
+            dynamics themselves: it leaves L2 along that orbit's unstable manifold, passes the Moon, and arrives
+            on L1's stable manifold.
+          </p>
+          <p>
+            Everything is solved in the circular restricted three-body problem (CR3BP) in MATLAB. The converged
+            initial state is then sent through a SPICE ephemeris model, which shows how far the idealized
+            solution is from flyable.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LYAPUNOV ORBITS -->
+    <section class="experience-section">
+      <h3 class="experience-title">Two Orbits at One Energy</h3>
+
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            The endpoints are planar <strong>Lyapunov orbits</strong> around L1 and L2. A ballistic transfer
+            conserves the Jacobi constant, so both orbits have to share one: I fixed <em>C</em> = 3.08 and
+            corrected each orbit with single shooting. The method uses the orbit's symmetry about the x-axis:
+            start perpendicular to the axis and iterate the initial <em>x</em> until the velocity is perpendicular
+            again at the next crossing. Holding <em>C</em> fixed sets the initial <em>v<sub>y</sub></em> from
+            <em>x</em>, leaving a one-variable Newton problem driven by entries of the state transition matrix.
+          </p>
+          <p>
+            The converged orbits have periods of <strong>14.2 days</strong> (L1) and <strong>16.0 days</strong>
+            (L2). The linearized dynamics matrix is derived symbolically, so the STM is integrated from the same
+            equations as the trajectory.
+          </p>
+        </div>
+        <div class="project-image">
+          <img loading="lazy" src="../assets/images/projects/cislunar/lyapunov-orbits.webp"
+            alt="L1 and L2 Lyapunov orbits on either side of the Moon in a Moon-centered rotating frame">
+          <p class="figure-caption">The L1 (blue) and L2 (red) Lyapunov orbits at <em>C</em> = 3.08, in a
+            Moon-centered rotating frame.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MANIFOLDS -->
+    <section class="experience-section">
+      <h3 class="experience-title">Following the Manifolds</h3>
+
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            Integrating the STM over one full period gives the <strong>monodromy matrix</strong>, whose eigenvalues
+            describe what happens to a small deviation after one revolution. Each orbit has a dominant real pair:
+            &lambda; &asymp; <strong>880</strong> for L1 and <strong>578</strong> for L2. A deviation along the
+            unstable eigenvector grows by that factor every revolution, and the reciprocal eigenvalue gives the
+            direction that decays.
+          </p>
+          <p>
+            I seeded 75 points around each orbit, carried the eigenvector to each point with the STM, nudged the
+            state by about 0.4 km along it, and integrated. The L2 unstable manifold runs forward in time, and the
+            L1 stable manifold runs backward, since it is the set of states that will arrive at the orbit. Every arc
+            stops where it first crosses the plane through the Moon, which serves as the Poincar&eacute; section
+            where the two families are compared.
+          </p>
+        </div>
+        <div class="project-image">
+          <img loading="lazy" src="../assets/images/projects/cislunar/manifolds.webp"
+            alt="Red unstable manifold arcs leaving the L2 orbit and blue stable manifold arcs arriving at the L1 orbit, all ending at the Moon's x-plane">
+          <p class="figure-caption">Unstable L2 manifold (red) and stable L1 manifold (blue), each cut off at the
+            Moon's x-plane.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SHOOTING -->
+    <section class="experience-section">
+      <h3 class="experience-title">Closing the Gap</h3>
+
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            Searching all 75 &times; 75 arc pairs at the section, the closest match still leaves a
+            <strong>727 km position gap and a 22.9 m/s velocity gap</strong>. Patching those two arcs together
+            would cost a maneuver, so instead I used the pair as an initial guess. I placed 10 patch points along the
+            combined path and ran <strong>multiple shooting</strong>, solving for every patch state at once so that
+            each segment's end matches the next segment's start in position and velocity.
+          </p>
+          <p>
+            The system is underdetermined, so each update is the minimum-norm Newton step from the pseudoinverse.
+            That keeps the solution close to the manifold guess instead of letting it wander off to some other
+            transfer. The continuity error drops from 2.9e-2 to <strong>7.6e-14 in five iterations</strong>. The
+            result is a continuous <strong>52.5-day</strong> transfer with the Jacobi constant held at 3.0796 along
+            the whole path.
+          </p>
+        </div>
+      </div>
+
+      <figure class="figure-wide">
+        <img loading="lazy" src="../assets/images/projects/cislunar/transfer.webp"
+          alt="Converged transfer winding around L2, passing above the Moon, and winding onto the L1 orbit, with yellow patch points">
+      </figure>
+      <p class="figure-caption">The converged transfer, with its unstable L2 leg in red and stable L1 leg in blue,
+        and the patch points in yellow.</p>
+
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            Re-integrating the whole trajectory in one pass from the first patch point lands <strong>0.94 km</strong>
+            from the final patch state after 52 days. That is the instability in the monodromy eigenvalues at work:
+            the same growth that lets a 0.4 km nudge peel off the orbit also amplifies integration error. This is why
+            the trajectory is held together as segments rather than by a single shot.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EPHEMERIS -->
+    <section class="experience-section">
+      <h3 class="experience-title">Leaving the Idealized Model</h3>
+
+      <div class="project-row">
+        <div class="project-text">
+          <p>
+            The CR3BP assumes a circular lunar orbit and ignores the Sun. To see what that costs, I mapped the
+            transfer's initial state into Moon-centered J2000 at an October 2026 epoch with SPICE and the DE440
+            ephemeris, using a pulsating rotating frame that accounts for the Moon's changing distance. From there
+            I propagated it with point-mass Earth and Sun perturbations.
+          </p>
+          <p>
+            From the same initial state, the ephemeris trajectory <strong>departs from the CR3BP path within its
+            first revolution</strong> and leaves the lunar vicinity within 26 days. This is expected rather than a
+            bug. With unstable eigenvalues in the hundreds, small modeling differences grow quickly, so a CR3BP
+            solution is only a starting guess and has to be re-corrected in the higher-fidelity model before it
+            means anything for a real mission.
+          </p>
+        </div>
+      </div>
+
+      <figure class="figure-wide figure-narrow">
+        <img loading="lazy" src="../assets/images/projects/cislunar/ephemeris.webp"
+          alt="CR3BP transfer in red staying between L1 and L2, while the ephemeris propagation of the same initial state in blue departs and escapes the lunar vicinity">
+      </figure>
+      <p class="figure-caption">The CR3BP transfer (red) and the same initial state propagated in the Earth&ndash;Moon&ndash;Sun
+        ephemeris model (blue).</p>
+    </section>
+
+    <section class="skills-section-lsdo">
+      <div class="skills-header">TOP SKILLS &amp; TOOLS UTILIZED</div>
+      <div class="skills-grid">
+        <div class="skill-tag">CR3BP &amp; Invariant Manifolds</div>
+        <div class="skill-tag">Differential Correction &amp; Multiple Shooting</div>
+        <div class="skill-tag">SPICE (MICE) Ephemerides</div>
+        <div class="skill-tag">MATLAB &amp; Symbolic Toolbox</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer-bar">
+    <div class="footer-container">
+      <div class="footer-left">
+        <a href="https://www.linkedin.com/in/alex-burns1/" target="_blank" class="linkedin-link">
+          <img loading="lazy" src="../assets/images/LinkedIn_icon.png" alt="LinkedIn" class="linkedin-icon">
+          <span class="linkedin-text">LinkedIn</span>
+        </a>
+      </div>
+
+      <div class="footer-copyright">
+        &copy; 2026 Alexander Burns
+      </div>
+
+      <div class="footer-right">
+        <a href="mailto:ajburns@stanford.edu" class="email-link">
+          ajburns@stanford.edu
+        </a>
+      </div>
+    </div>
+  </footer>
+
+<script src="../js/subpage.js" defer></script>
+</body>
+
+</html>
