@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>AB | Spar Structural Analysis</title>
+  <title>AB | Cessna 172 Wing Structure</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A MATLAB analytical tool for bending, torsion, and shear analysis of a single-cell uniform wing section, evaluating the structural response of a Cessna 172 wing across the V-n diagram envelope.">
+  <meta name="description" content="Bending, shear, and torsion analysis of a stringer-and-skin Cessna 172 wing in MATLAB for UCSD SE 160A, sized for minimum weight across five V-n load cases in Al 7075-T6 and carbon/epoxy.">
   <meta property="og:title" content="Cessna 172 Wing Structure Analysis | Alexander Burns">
-  <meta property="og:description" content="A MATLAB analytical tool for bending, torsion, and shear analysis of a single-cell uniform wing section, evaluating the structural response of a Cessna 172 wing across the V-n diagram envelope.">
+  <meta property="og:description" content="Bending, shear, and torsion analysis of a stringer-and-skin Cessna 172 wing in MATLAB for UCSD SE 160A, sized for minimum weight across five V-n load cases in Al 7075-T6 and carbon/epoxy.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://ajburns.com/projects/wingspar.html">
   <meta property="og:image" content="https://ajburns.com/assets/images/project_wingspar.png">
@@ -17,6 +17,91 @@
   <style>
     body {
       background-color: #ffffff;
+    }
+
+    /* Full-width figures. The shared .project-image is locked to 50% by a
+       !important rule, so these need their own block. */
+    .figure-wide {
+      margin: 0 0 0.5rem;
+    }
+
+    .figure-wide img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 6px;
+      border: 1px solid #e4e4e4;
+    }
+
+    /* Data tables. No table styling exists in the shared sheet. */
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      margin: 0.5rem 0 0.75rem;
+    }
+
+    .results-table caption {
+      caption-side: top;
+      text-align: left;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #666;
+      padding-bottom: 8px;
+    }
+
+    .results-table th,
+    .results-table td {
+      border-bottom: 1px solid #e0e0e0;
+      padding: 8px 10px;
+      text-align: right;
+    }
+
+    .results-table th:first-child,
+    .results-table td:first-child {
+      text-align: left;
+    }
+
+    .results-table thead th {
+      border-bottom: 1px solid #b8b8b8;
+      font-size: 0.75rem;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #555;
+      font-weight: 600;
+    }
+
+    .results-table td {
+      font-family: "Courier New", monospace;
+    }
+
+    .results-table td:first-child {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .results-table .governing {
+      font-weight: bold;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .table-note {
+      font-size: 0.8rem;
+      font-style: italic;
+      color: #666;
+      margin: 0 0 0.5rem;
+    }
+
+    @media (max-width: 560px) {
+      /* Six columns will not compress further, so let the tables scroll
+         sideways instead of shrinking the type to nothing. */
+      .results-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        font-size: 0.85rem;
+      }
     }
   </style>
 </head>
@@ -34,95 +119,222 @@
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <h1>Cessna 172 Wing Structure Analysis</h1>
-    <p class="project-page-hero-subtitle">MATLAB Aerospace Structural Analysis (Jan 2025 – Mar 2025)</p>
+    <p class="project-page-hero-subtitle">MATLAB Structural Analysis (Winter 2025)</p>
   </div>
 </header>
 
 <main class="project-detail-container">
 
+  <!-- OVERVIEW -->
   <section class="experience-section">
     <div class="project-row">
       <div class="project-text">
         <p>
-          For UCSD's <span class="accent-text">SE 160A</span>, I developed a robust MATLAB analytical tool to perform bending, torsion, and shear analysis on a single-cell uniform wing section. The study evaluated the structural response of a Cessna 172 wing under the operational envelope defined by the V-n diagram.
+          For UCSD's <span class="accent-text">SE 160A</span>, I wrote the analysis function at the core of a MATLAB
+          wing analysis program. It computes the <strong>bending, shear, and torsion response</strong> of a
+          single-cell, stringer-and-skin half-wing modeled on a Cessna 172: 240 in of span, a 48 in chord, and a
+          section 16% thick.
         </p>
         <p>
-          The analysis incorporated <strong>distributed aerodynamic loads</strong> - modeled as higher-order polynomials for lift and drag - alongside maneuvering load factors and concentrated forces to simulate wing-mounted equipment like landing gear or fuel stores.
+          I then used it to size the wing for <strong>minimum weight</strong> across five load cases from the V-n
+          envelope, once in Al 7075-T6 and once in carbon/epoxy. The aluminum wing comes in at <strong>667 lb</strong>
+          per half-span and the composite wing at <strong>79 lb</strong>. The composite design ends up close to its
+          strength and stiffness limits at the same time.
         </p>
       </div>
     </div>
   </section>
 
+  <!-- THE MODEL -->
   <section class="experience-section">
-    <h3 class="experience-title">Structural Validation & Margin of Safety</h3>
+    <h3 class="experience-title">The Wing Model</h3>
 
-    <div class="project-row project-row-two-column">
-      <div class="project-text project-column">
+    <figure class="figure-wide">
+      <img loading="lazy" src="../assets/images/projects/wingspar/section.webp"
+        alt="Idealized wing cross-section: an elliptical nose to quarter chord, flat upper and lower panels to half chord, and a linear taper to the trailing edge, with four stringers at 25% and 50% chord, the shear center at 14.9% chord, and the centroid at 37.5% chord">
+    </figure>
+    <p class="figure-caption">The idealized cross-section, with the stringer numbering used throughout this page. The
+      centroid and shear center are the analysis results for the sized design.</p>
+
+    <div class="project-row">
+      <div class="project-text">
         <p>
-          Using the <strong>modulus-weighted method</strong>, I calculated centroid locations and section properties for a complex airfoil geometry. I specifically tracked axial stress in stringer pairs and shear stress across the elliptical and flat skin panels.
+          The section is idealized as an elliptical nose out to the quarter chord, flat panels to the half chord, and
+          a straight taper to the trailing edge. Four stringers sit in the flat region, one pair at 25% and one at
+          50% chord. The stringers carry all of the bending, so the <strong>modulus-weighted centroid</strong> and
+          the bending stiffnesses come from them alone. The skin closes the cell: it carries the shear flow from
+          transverse shear and torsion, sets the torsional stiffness through Bredt's formula, and adds its weight.
+          A further 15% of structural weight is added for secondary structure.
         </p>
         <p>
-          I performed a comparative design study between <strong>Al 7075-T6</strong> and <strong>Carbon/Epoxy</strong> composites. By analyzing load cases including PHAA (Positive High Angle of Attack) and NLAA (Negative Low Angle of Attack), I calculated <strong>Margins of Safety (MS)</strong> to ensure structural integrity across the operational envelope.
+          Lift acts at the quarter chord and the wing's own weight at the half chord. The analysis moves both to the
+          centroid and adds the torque each offset creates, then integrates the distributed loads into internal
+          shear, bending moment, and torque along the span. From those come the stringer axial stresses, the skin
+          shear stresses, a margin of safety for every member, and the deflection, slope, and twist along the wing.
         </p>
-        <p>
-          The tool allowed for the optimization of stringer cross-sectional areas and skin thickness to minimize weight while maintaining a positive MS and controlling tip vertical displacement and twist.
-        </p>
-      </div>
-      
-      <div class="project-images-2over1 project-column" style="display: flex; flex-direction: column; gap: 1rem;">
-        <div class="bottom-row">
-          <figure style="margin: 0; width: 100%;">
-            
-            <img loading="lazy" src="../assets/images/projects/wingspar/vndiagram.png" 
-                 alt="V-n Diagram Load Cases" 
-                 style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-            <figcaption style="text-align: center; font-size: 0.75rem; color: #666; margin-top: 0.1rem;">
-              V-n Diagram Load Cases
-            </figcaption>
-          </figure>
-        </div>
-        <div class="top-row" style="display: flex; gap: 1rem;">
-          <figure style="flex: 1; margin: 0;">
-            
-            <img loading="lazy" src="../assets/images/projects/wingspar/airfoil.png" 
-                 alt="Cessna 172 Airfoil Geometry & Loads" 
-                 style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-            <figcaption style="text-align: center; font-size: 0.75rem; color: #666; margin-top: 0.1rem;">
-              Cessna 172 Airfoil Geometry & Loads
-            </figcaption>
-          </figure>
-          <figure style="flex: 1; margin: 0;">
-            
-            <img loading="lazy" src="../assets/images/projects/wingspar/stringers.png" 
-                 alt="Wing Cell Stringer Layout" 
-                 style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-            <figcaption style="text-align: center; font-size: 0.75rem; color: #666; margin-top: 0.1rem;">
-              Wing Cell Stringer Layout
-            </figcaption>
-          </figure>
-        </div>
       </div>
     </div>
   </section>
 
+  <!-- LOAD CASES -->
   <section class="experience-section">
-    <h3 class="experience-title">Calculated Results & Technical Specs</h3>
-        <ul style="list-style-type: none; padding: 0; line-height: 1.8; background: #f9f9f9; padding: 1rem; border-radius: 8px; border: 1px solid #eee;">
-          <li>• Modulus-weighted cross-section properties (EA, EI, GJ)</li>
-          <li>• Shear center location and twist distribution</li>
-          <li>• Internal axial, shear, bending, and torque diagrams</li>
-          <li>• Bending displacement and slope across the wing length</li>
-          <li>• Minimum weight optimization for aluminum vs. composite structures</li>
-        </ul>
+    <h3 class="experience-title">Five Load Cases</h3>
+
+    <div class="project-row">
+      <div class="project-text">
+        <p>
+          The load cases are cruise plus the four corners of the V-n envelope: positive and negative load factor,
+          each at high and low angle of attack. Lift varies along the span as a fourth-order polynomial, drag as a
+          tenth-order one, and the aerodynamic twisting moment is constant.
+        </p>
+        <table class="results-table">
+          <caption>Load case definitions (root values)</caption>
+          <thead>
+            <tr>
+              <th>Load case</th>
+              <th>Load factor</th>
+              <th>Lift (lb/in)</th>
+              <th>Drag (lb/in)</th>
+              <th>Twist moment (lb&middot;in/in)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Cruise</td><td>1.0</td><td>15</td><td>1.8</td><td>50</td></tr>
+            <tr><td>Positive high angle of attack (PHAA)</td><td>3.8</td><td>57</td><td>2.4</td><td>15</td></tr>
+            <tr><td>Positive low angle of attack (PLAA)</td><td>3.8</td><td>57</td><td>60</td><td>200</td></tr>
+            <tr><td>Negative high angle of attack (NHAA)</td><td>&minus;1.5</td><td>&minus;22.5</td><td>2.4</td><td>15</td></tr>
+            <tr><td>Negative low angle of attack (NLAA)</td><td>&minus;1.5</td><td>&minus;22.5</td><td>60</td><td>200</td></tr>
+          </tbody>
+        </table>
+        <p>
+          The high and low angle-of-attack pairs carry <strong>identical lift</strong>. What separates them is the
+          low angle-of-attack condition's much higher speed: <strong>25 times the drag</strong> and over 13 times
+          the twisting moment.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY PLAA GOVERNS -->
+  <section class="experience-section">
+    <h3 class="experience-title">Why the Low Angle-of-Attack Case Sizes the Stringers</h3>
+
+    <div class="project-row">
+      <div class="project-text">
+        <p>
+          Since PHAA and PLAA share the same lift, it would be natural to expect them to load the stringers about
+          equally. They do not. Lift bends the wing upward, putting the upper stringers in compression and the lower
+          ones in tension by roughly 14 ksi each. PLAA's drag bends the wing aft at the same time, adding tension
+          to the forward stringers and compression to the aft ones by almost the same amount.
+        </p>
+        <p>
+          The two bending stresses <strong>add on stringers 2 and 4</strong> and nearly cancel on stringers 1 and 3.
+          In the sized aluminum wing, that doubles the critical stress from 14.6 ksi in PHAA to
+          <strong>28.7 ksi in PLAA</strong>, exactly the allowable. Drag, not lift, is what finally sets the stringer
+          area.
+        </p>
+      </div>
+    </div>
+
+    <figure class="figure-wide">
+      <img loading="lazy" src="../assets/images/projects/wingspar/stringer-stress.webp"
+        alt="Bar chart of root axial stress in the four stringers of the sized aluminum wing. PHAA: stringer 1 at minus 13.5 ksi, 2 at plus 14.6, 3 at plus 13.5, 4 at minus 14.6. PLAA: stringer 1 at plus 0.6, 2 at plus 28.7, 3 at minus 0.6, 4 at minus 28.7, matching the 28.7 ksi allowable.">
+    </figure>
+    <p class="figure-caption">Root stringer stress in the sized aluminum wing. The allowable is the lower of yield
+      divided by 1.1 and ultimate divided by 1.5.</p>
+  </section>
+
+  <!-- SIZING -->
+  <section class="experience-section">
+    <h3 class="experience-title">Sizing for Minimum Weight</h3>
+
+    <div class="project-row">
+      <div class="project-text">
+        <p>
+          Both wings started from the same deliberately heavy preliminary design: 10 in&sup2; stringers and a 1 in
+          skin. Every load case came out with large margins. I placed the stringer pairs at 25% and 50% chord, the
+          positions that gave the lightest structure, then reduced stringer area and skin thickness until the
+          margins in the governing cases approached zero.
+        </p>
+        <p>
+          The sized aluminum wing uses 5.01 in&sup2; stringers and a 0.0417 in skin. The carbon/epoxy wing needs
+          only 0.919 in&sup2; stringers and a 0.0144 in skin, which takes the half-span weight from 667 lb to
+          <strong>79 lb, an 88% reduction</strong>.
+        </p>
+      </div>
+    </div>
+
+    <figure class="figure-wide">
+      <img loading="lazy" src="../assets/images/projects/wingspar/weight.webp"
+        alt="Bar chart of half-span wing weight. Preliminary: aluminum 3,841 lb, carbon/epoxy 2,151 lb. Sized: aluminum 667 lb, carbon/epoxy 79 lb.">
+    </figure>
+    <p class="figure-caption">Half-span wing weight for the preliminary and sized designs.</p>
+
+    <div class="project-row">
+      <div class="project-text">
+        <table class="results-table">
+          <caption>Minimum margin of safety, sized designs</caption>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Cruise</th>
+              <th>PHAA</th>
+              <th>PLAA</th>
+              <th>NHAA</th>
+              <th>NLAA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Al 7075-T6, stringers</td><td>5.91</td><td>0.96</td><td class="governing">0.0001</td><td>3.67</td><td>0.42</td></tr>
+            <tr><td>Al 7075-T6, skin</td><td>3.52</td><td>0.058</td><td>0.20</td><td>1.59</td><td class="governing">0.050</td></tr>
+            <tr><td>Carbon/epoxy, stringers</td><td>5.35</td><td>0.77</td><td class="governing">0.0000</td><td>3.28</td><td>0.49</td></tr>
+            <tr><td>Carbon/epoxy, skin</td><td>3.00</td><td class="governing">0.0055</td><td>0.048</td><td>1.47</td><td>0.16</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note">Underlined values are the governing (lowest) margin for each component.</p>
+        <p>
+          PLAA takes the stringers in both materials to zero margin. The skin, which carries the shear and torsion,
+          is governed by NLAA in the aluminum wing and by PHAA in the composite one. Every member sits at or near
+          zero margin in its governing case, which is what a minimum-weight design should look like.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STIFFNESS -->
+  <section class="experience-section">
+    <h3 class="experience-title">Stiffness as the Second Constraint</h3>
+
+    <div class="project-row">
+      <div class="project-text">
+        <p>
+          Strength was not the only limit. Carrying the load with so much less material also makes the composite
+          wing far less stiff, and its design had to keep tip deflection under <strong>15 in</strong>. At its
+          minimum-weight sizing, the PLAA tip deflection is <strong>14.79 in</strong>, just inside that limit. The
+          aluminum wing deflects only 5.07 in under the same load.
+        </p>
+        <p>
+          That leaves the composite wing with almost no room to remove more material. The price of the 588 lb
+          saving is cost: carbon fiber typically runs more than ten times the price of aluminum per pound, before
+          the added manufacturing expense.
+        </p>
+      </div>
+    </div>
+
+    <figure class="figure-wide">
+      <img loading="lazy" src="../assets/images/projects/wingspar/deflection.webp"
+        alt="Line chart of vertical deflection along the 240 in half-span under PLAA. Aluminum reaches 5.07 in at the tip and carbon/epoxy reaches 14.79 in, just under the 15 in limit.">
+    </figure>
+    <p class="figure-caption">Vertical deflection along the span under PLAA for both sized designs.</p>
   </section>
 
   <section class="skills-section-lsdo">
-    <div class="skills-header">TOP SKILLS & TOOLS UTILIZED</div>
+    <div class="skills-header">TOP SKILLS &amp; TOOLS UTILIZED</div>
     <div class="skills-grid">
-      <div class="skill-tag">Aerospace Structures</div>
+      <div class="skill-tag">Thin-Walled Beam Analysis</div>
+      <div class="skill-tag">Stringer-Skin Idealization</div>
+      <div class="skill-tag">Metallic vs Composite Sizing</div>
       <div class="skill-tag">MATLAB</div>
-      <div class="skill-tag">Composite Design</div>
-      <div class="skill-tag">Analytical Load Modeling</div>
     </div>
   </section>
 
